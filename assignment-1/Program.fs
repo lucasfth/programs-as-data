@@ -1,8 +1,6 @@
-(* Programming language concepts for software developers, 2010-08-28 *)
+﻿(* Programming language concepts for software developers, 2010-08-28 *)
 
 (* Evaluating simple expressions with variables *)
-
-module Intro2
 
 (* Association lists map object language variables to their values *)
 
@@ -32,7 +30,11 @@ let e2 = Prim("+", CstI 3, Var "a")
 
 let e3 = Prim("+", Prim("*", Var "b", CstI 9), Var "a")
 
-let e4 = Prim("==", Prim("max", Var "a", Var "b"), Prim("min", Var "c", Var "baf")) // should eval to 1
+let e4 = Prim("==", Prim("max", Var "a", Var "b"), Prim("min", Var "c", Var "baf")) // should eval to 0
+
+let e4_1 =
+    Prim("==", Prim("max", Var "a", Var "b"), Prim("min", Var "b", Var "baf")) // should eval to 1
+
 
 
 (* Evaluation within an environment *)
@@ -61,3 +63,7 @@ let e1v = eval e1 env
 let e2v1 = eval e2 env
 let e2v2 = eval e2 [ ("a", 314) ]
 let e3v = eval e3 env
+
+let e4v = eval e4 env
+
+let e4_1v = eval e4_1 env
