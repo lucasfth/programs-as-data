@@ -100,3 +100,69 @@ let rec aeval e (env: (string * int) list) : int =
 let ae1v = aeval (Sub(Var "v", Add(Var "w", Var "z"))) env // v - (w+z)
 let ae2v = aeval (Mul(CstI 2, (Sub(Var "v", Add(Var "w", Var "z"))))) env // 2*(v-(w+z))
 let ae3v = aeval (Add(Var "x", Add(Var "y", Add(Var "z", Var "v")))) env // x + y + z + v
+
+let rec fmt (exp: aexpr) : string =
+    match exp with
+    | Var v -> v
+    | CstI i -> i |> string
+    | Add(e1, e2) -> "(" + fmt e1 + " + " + fmt e2 + ")"
+    | Sub(e1, e2) -> "(" + fmt e1 + " - " + fmt e2 + ")"
+    | Mul(e1, e2) -> "(" + fmt e1 + " * " + fmt e2 + ")"
+
+let fmt_test = fmt (Sub(Var "x", CstI 34))
+
+let rec simplify exp =
+    match exp with
+    | CstI i -> exp
+    | Var v -> exp
+    | Add(e1, e2) ->
+        let se1 = simplify e1
+        let se2 = simplify e2
+
+        match (se1, se2) with
+        | (CstI 0, _) -> se2
+        | (_, CstI 0) -> se2
+        | _ -> exp
+    | Sub(e1, e2) ->
+        let se1 = simplify e1
+        let se2 = simplify e2
+
+        match (se1, se2) with
+        | (_, CstI 0) -> se1
+        | _ when se1 = se2 -> CstI 0
+        | _ -> exp
+    | Mul(e1, e2) ->
+        let se1 = simplify e1
+        let se2 = simplify e2
+
+        match (se1, se2) with
+        | (CstI 1, _) -> se2
+        | (_, CstI 1) -> se1
+        | (CstI 0, _) -> CstI 0
+        | (_, CstI 0) -> CstI 0
+        | _ -> exp
+
+let sim_test = simplify (Add(CstI 1, CstI 34))
+let sim_test2 = simplify (Add(CstI 0, CstI 34))
+let sim_test3 = simplify (Add(CstI 0, Var "x"))
+let sim_test4 = simplify (Sub(CstI 0, Var "x"))
+let sim_test5 = simplify (Sub(Var "x", Var "x"))
+let sim_test6 = simplify (Sub(Var "x", CstI 0))
+let sim_test7 = simplify (Mul(CstI 1, Var "x"))
+let sim_test8 = simplify (Mul(Var "x", CstI 1))
+let sim_test9 = simplify (Mul(CstI 0, Var "x"))
+let sim_test10 = simplify (Mul(Var "x", CstI 0))
+let sim_test11 = simplify (Mul(CstI 0, CstI 0))
+let sim_test12 = simplify (Mul(CstI 1, CstI 1))
+let sim_test13 = simplify (Mul(CstI 12, CstI 10))
+
+let rec dif (exp: aexpr) (varV: string ) = 
+    let res = simplify exp
+    match res with 
+    | CstI i -> CstI 0
+    | Var v when v = varV -> CstI 1
+    | Var _ -> CstI 0
+    | Add ()
+    | Sub (dif1, dif2)
+
+
