@@ -157,12 +157,18 @@ let sim_test12 = simplify (Mul(CstI 1, CstI 1))
 let sim_test13 = simplify (Mul(CstI 12, CstI 10))
 
 let rec dif (exp: aexpr) (varV: string ) = 
-    let res = simplify exp
-    match res with 
+    match exp with 
     | CstI i -> CstI 0
-    | Var v when v = varV -> CstI 1
+    | Var v when (v |> string) = varV -> CstI 1
     | Var _ -> CstI 0
-    | Add ()
-    | Sub (dif1, dif2)
+    | Add (dif1, dif2) -> Add(dif dif1 varV, dif dif2 varV)
+    | Sub (dif1, dif2) -> Sub(dif dif1 varV, dif dif2 varV)
+    | Mul (dif1, dif2) -> 
+        let d1 = dif dif1 varV 
+        let d2 = dif dif2 varV 
+        Add(Mul(d1, dif2), Mul(dif1, d2))
 
-
+let dif_1 = dif (CstI 22) "bum" // 0
+let dif_2 = dif (Mul(Var "x", CstI 2)) "x" // 1, 0
+let dif_3 = dif (Mul(Var "x", CstI 2)) "notx" // 0, 0
+let dif_4 = dif (Var "x") "x"
