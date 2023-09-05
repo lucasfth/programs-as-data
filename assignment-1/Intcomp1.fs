@@ -5,7 +5,7 @@
 
 (* Object language expressions with variable bindings and nested scope *)
 
-module Intcomp1
+module Intcomp1 =
 
 type expr =
     | CstI of int
@@ -16,46 +16,26 @@ type expr =
 (* Some closed expressions: *)
 
 let e1 =
-    Let([ ("x1", Prim("+", CstI 5, CstI 7)); ("x2", Prim("*", Var "x1", CstI 2)) ], Prim("+", Var "x1", Var "x2"))
+    Let([("x1", Prim("+", CstI 5, CstI 7))],
+        Let([("x2", Prim("*", Var "x1", CstI 2))],
+            Prim("+", Var "x1", Var "x2")))
 
-let e2 = Let([ ("x2", CstI 17) ], Prim("+", Var "x", Var "x"))
-let e3 = Let([ ("x", Prim("-", CstI 5, CstI 4)) ], Prim("*", Var "x", CstI 100))
+let e2 =
+    Let([("y1", Prim("-", CstI 10, CstI 3))],
+        Let([("y2", Prim("+", Var "y1", CstI 2))],
+            Prim("*", Var "y1", Var "y2")))
+
+let e3 =
+    Let([("a", Prim("-", CstI 8, CstI 4))],
+        Let([("b", Prim("+", Var "a", CstI 3))],
+            Prim("*", Var "b", Var "a")))
 
 let e4 =
-    Prim("+", Prim("+", CstI 20, Let([ ("x", CstI 17) ], Prim("+", Var "x", CstI 2))), CstI 30)
-
-let e5 = Prim("*", CstI 2, Let([ ("x", CstI 3) ], Prim("+", Var "x", CstI 4)))
-
-let e7 =
-    Let([ ("z", CstI 3); ("y", Prim("+", Var "z", CstI 1)) ], Prim("+", Var "z", Var "y"))
+    Let([("p", Prim("+", CstI 6, CstI 9))],
+        Let([("q", Prim("*", Var "p", CstI 4))],
+            Prim("-", Var "q", Var "p")))
 
 (* Some expressions with free variables: *)
-
-// let e1 = Let("z", CstI 17, Prim("+", Var "z", Var "z"))
-
-// let e2 =
-//     Let("z", CstI 17, Prim("+", Let("z", CstI 22, Prim("*", CstI 100, Var "z")), Var "z"))
-
-// let e3 = Let("z", Prim("-", CstI 5, CstI 4), Prim("*", CstI 100, Var "z"))
-
-// let e4 =
-//     Prim("+", Prim("+", CstI 20, Let("z", CstI 17, Prim("+", Var "z", CstI 2))), CstI 30)
-
-// let e5 = Prim("*", CstI 2, Let("x", CstI 3, Prim("+", Var "x", CstI 4)))
-
-// let e6 = Let("z", Var "x", Prim("+", Var "z", Var "x"))
-
-// let e7 =
-//     Let("z", CstI 3, Let("y", Prim("+", Var "z", CstI 1), Prim("+", Var "z", Var "y")))
-
-// let e8 =
-//     Let("z", Let("x", CstI 4, Prim("+", Var "x", CstI 5)), Prim("*", Var "z", CstI 2))
-
-// let e9 =
-//     Let("z", CstI 3, Let("y", Prim("+", Var "z", CstI 1), Prim("+", Var "x", Var "y")))
-
-// let e10 =
-//     Let("z", Prim("+", Let("x", CstI 4, Prim("+", Var "x", CstI 5)), Var "x"), Prim("*", Var "z", CstI 2))
 
 (* ---------------------------------------------------------------------- *)
 
@@ -66,8 +46,8 @@ let rec lookup env x =
     | [] -> failwith (x + " not found")
     | (y, v) :: r -> if x = y then v else lookup r x
 
-let rec eval e (env: (string * int) list) : int =
-    match e with
+let rec eval en (env: (string * int) list) : int =
+    match en with
     | CstI i -> i
     | Var x -> lookup env x
     | Let(lst, e) ->
@@ -86,8 +66,7 @@ let rec eval e (env: (string * int) list) : int =
     | Prim _ -> failwith "unknown primitive"
 
 let run e = eval e []
-let res = List.map run [ e1; e2; e3; e4; e5; e7 ] (* e6 has free variables *)
-
+let res = List.map run [ e1; e2; e3; e4;] (* e6 has free variables *)
 
 (* ---------------------------------------------------------------------- *)
 

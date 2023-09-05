@@ -1,4 +1,4 @@
-﻿module Program
+﻿module Program =
 
 (* Programming language concepts for software developers, 2010-08-28 *)
 
