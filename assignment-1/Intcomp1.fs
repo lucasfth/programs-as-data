@@ -110,7 +110,7 @@ let rec mem x vs =
     | v :: vr -> x = v || mem x vr
 
 (* Checking whether an expression is closed.  The vs is 
-   a list of the bound variables.  *)
+   a list of the bound variables.  
 
 let rec closedin (e: expr) (vs: string list) : bool =
     match e with
@@ -125,7 +125,7 @@ let rec closedin (e: expr) (vs: string list) : bool =
 
 let closed1 e = closedin e []
 let _ = List.map closed1 [ e1; e2; e3; e4; e5; e6; e7; e8; e9; e10 ]
-
+*)
 (* ---------------------------------------------------------------------- *)
 
 (* Substitution of expressions for variables *)
@@ -145,7 +145,7 @@ let rec remove env x =
     | [] -> []
     | (y, e) :: r -> if x = y then r else (y, e) :: remove r x
 
-(* Naive substitution, may capture free variables: *)
+(* Naive substitution, may capture free variables: 
 
 let rec nsubst (e: expr) (env: (string * expr) list) : expr =
     match e with
@@ -192,8 +192,8 @@ let newVar: string -> string =
          x + string (!n))
 
     varMaker
-
-(* Correct, capture-avoiding substitution *)
+*)
+(* Correct, capture-avoiding substitution 
 
 let rec subst (e: expr) (env: (string * expr) list) : expr =
     match e with
@@ -220,14 +220,14 @@ let e8s1a = subst e8 [ ("z", CstI 100) ]
 
 // Shows renaming of bound variable z (to z3), avoiding capture of free z
 let e9s1a = subst e9 [ ("y", Var "z") ]
-
+*)
 (* ---------------------------------------------------------------------- *)
 
 (* Free variables *)
 
 (* Operations on sets, represented as lists.  Simple but inefficient;
    one could use binary trees, hashtables or splaytrees for
-   efficiency.  *)
+   efficiency. *)
 
 (* union(xs, ys) is the set of all elements in xs or ys, without duplicates *)
 
@@ -245,17 +245,23 @@ let rec minus (xs, ys) =
 
 (* Find all variables that occur free in expression e *)
 
-let rec freevars e (env: (string * int) list) list =
+// let e1 = Let(["x1", Prim("+", Var "x1", CstI 7)], Prim("+", Var "x1", CstI 8))
+
+let rec freevars (e: expr) : string list =
     match e with
     | CstI i -> []
-    | Var x -> [ x ]
-    | Let(x, erhs, ebody) -> union (freevars erhs, minus (freevars ebody, [ x ]))
+    | Var x -> [x]
+    | Let(bindings, body) ->
+        let bounds = List.map (fun (x, _) -> x) bindings in
+        let rVars = List.collect (fun (_, erhs) -> freevars erhs) bindings in
+        let bVars = minus (freevars body, bounds) in
+        union (rVars, bVars)
     | Prim(ope, e1, e2) -> union (freevars e1, freevars e2)
 
 (* Alternative definition of closed *)
 
 let closed2 e = (freevars e = [])
-let _ = List.map closed2 [ e1; e2; e3; e4; e5; e6; e7; e8; e9; e10 ]
+let res2 = List.map closed2 [ e1; e2; e3; e4; e5; e6; e7; e8; e9; e10 ]
 
 (* ---------------------------------------------------------------------- *)
 
