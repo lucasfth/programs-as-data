@@ -5,7 +5,7 @@
     <RootNamespace>assignment_1</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Intro2.fs" />
     <Compile Include="Program.fs" />
+    <Compile Include="Intcomp1.fs" />
   </ItemGroup>
 </Project>

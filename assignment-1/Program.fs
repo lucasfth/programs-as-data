@@ -1,4 +1,6 @@
-﻿(* Programming language concepts for software developers, 2010-08-28 *)
+﻿module Program
+
+(* Programming language concepts for software developers, 2010-08-28 *)
 
 (* Evaluating simple expressions with variables *)
 
@@ -156,16 +158,16 @@ let sim_test11 = simplify (Mul(CstI 0, CstI 0))
 let sim_test12 = simplify (Mul(CstI 1, CstI 1))
 let sim_test13 = simplify (Mul(CstI 12, CstI 10))
 
-let rec dif (exp: aexpr) (varV: string ) = 
-    match exp with 
+let rec dif (exp: aexpr) (varV: string) =
+    match exp with
     | CstI i -> CstI 0
     | Var v when (v |> string) = varV -> CstI 1
     | Var _ -> CstI 0
-    | Add (dif1, dif2) -> Add(dif dif1 varV, dif dif2 varV)
-    | Sub (dif1, dif2) -> Sub(dif dif1 varV, dif dif2 varV)
-    | Mul (dif1, dif2) -> 
-        let d1 = dif dif1 varV 
-        let d2 = dif dif2 varV 
+    | Add(dif1, dif2) -> Add(dif dif1 varV, dif dif2 varV)
+    | Sub(dif1, dif2) -> Sub(dif dif1 varV, dif dif2 varV)
+    | Mul(dif1, dif2) ->
+        let d1 = dif dif1 varV
+        let d2 = dif dif2 varV
         Add(Mul(d1, dif2), Mul(dif1, d2))
 
 let dif_1 = dif (CstI 22) "bum" // 0
