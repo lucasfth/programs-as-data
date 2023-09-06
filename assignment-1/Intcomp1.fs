@@ -1,8 +1,6 @@
 (* Programming language concepts for software developers, 2012-02-17 *)
-
 (* Evaluation, checking, and compilation of object language expressions *)
 (* Stack machines for expression evaluation                             *)
-
 (* Object language expressions with variable bindings and nested scope *)
 
 module Intcomp1 =
@@ -168,6 +166,7 @@ let rec tcomp (e: expr) (cenv: string list) : texpr =
             TLet(tcomp erhs cenv, tcomp ebody cenv1)
     | Prim (ope, e1, e2) -> TPrim (ope, tcomp e1 cenv, tcomp e2 cenv)
 
+(* Test cases for tcomp *)
 let test = tcomp e1 []
 let test1 = tcomp e2 []
 let test2 = tcomp e3 []
