@@ -2,6 +2,7 @@ package Intro;
 
 import java.util.*;
 
+//Exercise 1.4
 public class SimpleExpr {
 
     public static HashMap<String, Integer> env;
@@ -18,15 +19,22 @@ public class SimpleExpr {
         env.put("x", 99);
         env.put("y", 42);
 
+        //Exercise 1.4 (ii)
         Expr e1 = new Add(new CstI(17), new Var("z"));
         Expr e2 = new Add(new CstI(27), new Var("y"));
         Expr e3 = new Add(new CstI(37), new Var("baf"));
         Expr e4 = new Mul( new Add(new CstI(17), new Var("z")), new Add(new CstI(27), new Var("y")));
+        System.out.println(e1.toString());
+        System.out.println(e2.toString());
+        System.out.println(e3.toString());
+        System.out.println(e4.toString());
+        //Exercise 1.4 (iii)
         System.out.println(e1.eval(env));
         System.out.println(e2.eval(env));
         System.out.println(e3.eval(env));
         System.out.println(e4.eval(env));
 
+        //Exercise 1.4 (iv)
         Expr se1 = new Add(new CstI(0), new Var("e"));
         Expr se2 = new Add(new Var("e"), new CstI(0));
         Expr se3 = new Sub(new Var("e"), new CstI(0));
@@ -50,12 +58,13 @@ public class SimpleExpr {
         System.out.println(se9.simplify()); // Expected: "(val e * val e)"
         System.out.println(se10.simplify()); // Expected: "x"
         System.out.println(se11.simplify()); // Expected: "(val e + val e) * (val e + val e)"
-
     }
 
     public abstract static class Expr {
         abstract public String toString();
+        //Exercise 1.4 (iii)
         abstract public int eval(HashMap<String, Integer> env);
+        //Exercise 1.4 (iv)
         abstract public Expr simplify();
     }
     
@@ -71,11 +80,13 @@ public class SimpleExpr {
            return ("CstI " + val);
         }
 
+        //Exercise 1.4 (iii)
         @Override
         public int eval(HashMap<String, Integer> map) {
             return val;
         }
 
+        //Exercise 1.4 (iv)
         @Override
         public Expr simplify() {
            return this;
@@ -95,11 +106,13 @@ public class SimpleExpr {
             return ("Val " + val);
         }
 
+        //Exercise 1.4 (iii)
         @Override
         public int eval(HashMap<String, Integer> map) {
             return map.get(val);
         }
 
+        //Exercise 1.4 (iv)
         @Override
         public Expr simplify() {
             return this; 
@@ -121,6 +134,7 @@ public class SimpleExpr {
             return "(" + e1 + " " + ope + " " + e2 + ")";
         }
 
+        //Exercise 1.4 (iii)
         @Override
         public int eval(HashMap<String, Integer> map) {
             int r1 = e1.eval(map);
@@ -137,6 +151,7 @@ public class SimpleExpr {
             } 
         }
 
+        //Exercise 1.4 (iv)
         @Override
         public Expr simplify() {
             if(e1 instanceof Binop){
