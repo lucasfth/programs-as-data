@@ -7,26 +7,14 @@
 
 module Intcomp1
 
-//Exercise 2.1 
+//Exercise 2.1 changed so some IS OURS
 type expr =
     | CstI of int
     | Var of string
     | Let of (string * expr) list * expr
     | Prim of string * expr * expr;;
 
-(* Some closed expressions: *)
-(* let e1 = Let("z", CstI 17, Prim("+", Var "z", Var "z"));;
-let e2 = Let("z", CstI 17, Prim("+", Let("z", CstI 22, Prim("*", CstI 100, Var "z")), Var "z"));;
-let e3 = Let("z", Prim("-", CstI 5, CstI 4), Prim("*", CstI 100, Var "z"));;
-let e4 = Prim("+", Prim("+", CstI 20, Let("z", CstI 17, Prim("+", Var "z", CstI 2))), CstI 30);;
-let e5 = Prim("*", CstI 2, Let("x", CstI 3, Prim("+", Var "x", CstI 4)));;
-let e6 = Let("z", Var "x", Prim("+", Var "z", Var "x"))
-let e7 = Let("z", CstI 3, Let("y", Prim("+", Var "z", CstI 1), Prim("+", Var "z", Var "y")))
-let e8 = Let("z", Let("x", CstI 4, Prim("+", Var "x", CstI 5)), Prim("*", Var "z", CstI 2))
-let e9 = Let("z", CstI 3, Let("y", Prim("+", Var "z", CstI 1), Prim("+", Var "x", Var "y")))
-let e10 = Let("z", Prim("+", Let("x", CstI 4, Prim("+", Var "x", CstI 5)), Var "x"), Prim("*", Var "z", CstI 2)) *)
-
-//Rewritten closed expressions to match new Let
+//Rewritten closed expressions to match new Let IT IS OURS
 let e1 = Let(["z", CstI 17], Prim("+", Var "z", Var "z"));;
 let e2 = Let(["z", CstI 17], Prim("+", Let(["z", CstI 22], Prim("*", CstI 100, Var "z")), Var "z"));;
 let e3 = Let(["z", Prim("-", CstI 5, CstI 4)], Prim("*", CstI 100, Var "z"));;
@@ -47,9 +35,7 @@ let rec lookup env x =
     | []        -> failwith (x + " not found")
     | (y, v)::r -> if x=y then v else lookup r x;;
 
-//Exercise 2.1 
-// let e10 = Let(["z", Prim("+", Let(["x", CstI 4], Prim("+", Var "x", CstI 5)), Var "x")], Prim("*", Var "z", CstI 2));
-// let e = Let ([("x1", CstI 17); ("x2", CstI 8)], Prim("+", Var "x1", Var "x2"))
+//Exercise 2.1 Changed so some IS OURS
 let rec eval en (env: (string * int) list) : int =
     match en with
     | CstI i -> i
@@ -215,7 +201,7 @@ let rec minus (xs, ys) =
 
 (* Find all variables that occur free in expression e *)
 
-//Exercise 2.2
+//Exercise 2.2 some is changed so some IS OURS
 let rec freevars (e: expr) : string list =
     match e with
     | CstI i -> []
@@ -254,7 +240,7 @@ let rec getindex vs x =
 
 (* Compiling from expr to texpr *)
 
-//Exercise 2.3
+//Exercise 2.3 changed so some IS OURS
 let rec tcomp (e: expr) (cenv: string list) : texpr =
     match e with
     | CstI i -> TCstI i
@@ -269,7 +255,7 @@ let rec tcomp (e: expr) (cenv: string list) : texpr =
         | _ -> failwith "Should not get here"
     | Prim (ope, e1, e2) -> TPrim (ope, tcomp e1 cenv, tcomp e2 cenv);;
 
-(* Test cases for tcomp *)
+(* Test cases for tcomp *) //  IT IS OURS
 let test = tcomp e1 []
 let test1 = tcomp e2 []
 let test2 = tcomp e3 []
@@ -278,6 +264,7 @@ let test4 = tcomp e5 []
 (* Evaluation of target expressions with variable indexes.  The
    run-time environment renv is a list of variable values (ints).  *)
 
+// Changed so some IS OURS
 let rec teval (e : texpr) (renv : int list) : int =
     match e with
     | TCstI i -> i
@@ -291,11 +278,13 @@ let rec teval (e : texpr) (renv : int list) : int =
     | TPrim("-", e1, e2) -> teval e1 renv - teval e2 renv
     | TPrim _            -> failwith "unknown primitive";;
 
-
+// IT IS OURS
 let teval1 = teval test []
 let teval2 = teval test1 []
 let teval3 = teval test2 []
 let teval4 = teval test3 []
+
+// ----------------- MADE UNTIL HERE -----------------
 
 
 (* Correctness: eval e []  equals  teval (tcomp e []) [] *)
@@ -383,24 +372,24 @@ type stackvalue =
 
 (* Compilation to a list of instructions for a unified-stack machine *)
 
-let rec scomp (e : expr) (cenv : stackvalue list) : sinstr list =
-    match e with
-    | CstI i -> [SCstI i]
-    | Var x  -> [SVar (getindex cenv (Bound x))]
-    | Let(x, erhs, ebody) -> 
-          scomp erhs cenv @ scomp ebody (Bound x :: cenv) @ [SSwap; SPop]
-    | Prim("+", e1, e2) -> 
-          scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SAdd] 
-    | Prim("-", e1, e2) -> 
-          scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SSub] 
-    | Prim("*", e1, e2) -> 
-          scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SMul] 
-    | Prim _ -> failwith "scomp: unknown operator";;
+// let rec scomp (e : expr) (cenv : stackvalue list) : sinstr list =
+//     match e with
+//     | CstI i -> [SCstI i]
+//     | Var x  -> [SVar (getindex cenv (Bound x))]
+//     | Let(x, erhs, ebody) -> 
+//           scomp erhs cenv @ scomp ebody (Bound x :: cenv) @ [SSwap; SPop]
+//     | Prim("+", e1, e2) -> 
+//           scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SAdd] 
+//     | Prim("-", e1, e2) -> 
+//           scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SSub] 
+//     | Prim("*", e1, e2) -> 
+//           scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SMul] 
+//     | Prim _ -> failwith "scomp: unknown operator";;
 
-let s1 = scomp e1 [];;
-let s2 = scomp e2 [];;
-let s3 = scomp e3 [];;
-let s5 = scomp e5 [];;
+// let s1 = scomp e1 [];;
+// let s2 = scomp e2 [];;
+// let s3 = scomp e3 [];;
+// let s5 = scomp e5 [];;
 
 (* Output the integers in list inss to the text file called fname: *)
 

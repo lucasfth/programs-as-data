@@ -6,6 +6,7 @@ module Intro2
 
 (* Association lists map object language variables to their values *)
 
+// Changed so some IS OURS
 let env =
     [ ("a", 3)
       ("c", 78)
@@ -27,7 +28,7 @@ let rec lookup env x =
 let cvalue = lookup env "c";;
 
 (* Object language expressions with variables *)
-// Exercise 1.1 (iv)
+// Exercise 1.1 (iv) changed so some IS OURS
 type expr = 
   | CstI of int
   | Var of string
@@ -51,7 +52,7 @@ let if_false = If(CstI 0, CstI 11, CstI 22);;
 
 (* Evaluation within an environment *)
 
-// Exercise 1.1 (i), (iii) (v)
+// Exercise 1.1 (i), (iii) (v) changed so some IS OURS
 let rec eval e (env: (string * int) list) : int =
     match e with
     | CstI i -> i
@@ -75,7 +76,7 @@ let e2v1 = eval e2 env;;
 let e2v2 = eval e2 [("a", 314)];;
 let e3v  = eval e3 env;;
 
-// Exercise 1.1 (ii)
+// Exercise 1.1 (ii) REST IS OURS
 let e4v = eval equals_false env;;
 let e4_1v = eval equals_true env;;
 let e5v = eval max_first env;;
