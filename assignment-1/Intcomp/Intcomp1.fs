@@ -48,16 +48,19 @@ let rec lookup env x =
     | (y, v)::r -> if x=y then v else lookup r x;;
 
 //Exercise 2.1 
+// let e10 = Let(["z", Prim("+", Let(["x", CstI 4], Prim("+", Var "x", CstI 5)), Var "x")], Prim("*", Var "z", CstI 2));
+// let e = Let ([("x1", CstI 17); ("x2", CstI 8)], Prim("+", Var "x1", Var "x2"))
 let rec eval en (env: (string * int) list) : int =
     match en with
     | CstI i -> i
     | Var x -> lookup env x
     | Let(lst, e) ->
-        match lst with
-        | (str, ie) :: tail ->
-            let updatedEnv = (str, (eval ie env)) :: env
-            eval e updatedEnv
-        | [] -> eval e env
+        let newEnv = List.fold (
+                    fun (env' : (string * int) list) (var, exp) ->
+                                let evaled = eval exp env'
+                                (var, evaled) :: env'
+                        ) env lst
+        eval e newEnv
     | Prim("+", e1, e2) -> eval e1 env + eval e2 env
     | Prim("*", e1, e2) -> eval e1 env * eval e2 env
     | Prim("-", e1, e2) -> eval e1 env - eval e2 env
@@ -225,9 +228,10 @@ let rec freevars (e: expr) : string list =
     | Prim(ope, e1, e2) -> union (freevars e1, freevars e2);;
 
 (* Alternative definition of closed *)
+//Let x1 = x1+7 in x1+8 end
 
 let closed2 e = (freevars e = []);;
-let _ = List.map closed2 [e1;e2;e3;e4;e5;e6;e7;e8;e9;e10]
+let freevarsRes = List.map closed2 [e1;e2;e3;e4;e5;e6;e7;e8;e9;e10]
 
 (* ---------------------------------------------------------------------- *)
 
@@ -262,6 +266,7 @@ let rec tcomp (e: expr) (cenv: string list) : texpr =
             let cenv1 = lvar :: cenv
             let erhs = expr
             TLet(tcomp erhs cenv, tcomp ebody cenv1)
+        | _ -> failwith "Should not get here"
     | Prim (ope, e1, e2) -> TPrim (ope, tcomp e1 cenv, tcomp e2 cenv);;
 
 (* Test cases for tcomp *)
@@ -285,6 +290,13 @@ let rec teval (e : texpr) (renv : int list) : int =
     | TPrim("*", e1, e2) -> teval e1 renv * teval e2 renv
     | TPrim("-", e1, e2) -> teval e1 renv - teval e2 renv
     | TPrim _            -> failwith "unknown primitive";;
+
+
+let teval1 = teval test []
+let teval2 = teval test1 []
+let teval3 = teval test2 []
+let teval4 = teval test3 []
+
 
 (* Correctness: eval e []  equals  teval (tcomp e []) [] *)
 
