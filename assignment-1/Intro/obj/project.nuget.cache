@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "jExZiaDNtWcYkgsTEibcjYRmRefXO4Om0GH87LTVmMw7eDF2AvkpNPglYCwzjdnPLnstOLOuitrLkEjoIXWPug==",
+  "success": true,
+  "projectFilePath": "/Users/lucasfreytorreshanson/Desktop/code/programs-as-data/assignment-1/Intro/Intro.fsproj",
+  "expectedPackageFiles": [
+    "/Users/lucasfreytorreshanson/.nuget/packages/fsharp.core/7.0.400/fsharp.core.7.0.400.nupkg.sha512"
+  ],
+  "logs": []
+}
