@@ -376,14 +376,18 @@ let rec scomp (e : expr) (cenv : stackvalue list) : sinstr list =
     match e with
     | CstI i -> [SCstI i]
     | Var x  -> [SVar (getindex cenv (Bound x))]
-    | Let(erhs, ebody) -> 
-        match erhs with 
-        |[x, r] -> 
-            let lvar = x;
-            let h = r;
-            scomp h cenv @ scomp ebody (Bound lvar :: cenv) @ [SSwap; SPop]
-        | _ -> failwith "Should not get here"
-            // scomp erhs cenv @ scomp ebody (Bound x :: cenv) @ [SSwap; SPop]
+    | Let (tup, ebody) ->
+        let rec bindings b sinlst cenv' =
+            match b with
+            | [] -> sinlst, cenv'
+            | (str, exp) :: tail ->
+                let sinstrs = scomp exp cenv'
+                let newcenv = Bound str :: cenv'
+                bindings tail (sinstrs @ sinlst) newcenv
+        
+        let sinstrs, newcenv = bindings tup [] cenv
+        let sinstrs2 = scomp ebody newcenv
+        sinstrs @ sinstrs2 @ [SSwap; SPop]
     | Prim("+", e1, e2) -> 
           scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SAdd] 
     | Prim("-", e1, e2) -> 

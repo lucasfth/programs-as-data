@@ -22,6 +22,7 @@ import java.util.Scanner;
    not rely on object-orientation or garbage collection.  */
 
 class Machine {
+
   final static int 
     SCST = 0, SVAR = 1, SADD = 2, SSUB = 3, SMUL = 4, SPOP = 5, SSWAP = 6;
   
