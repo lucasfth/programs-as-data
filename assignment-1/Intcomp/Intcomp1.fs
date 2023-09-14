@@ -381,9 +381,7 @@ let rec scomp (e : expr) (cenv : stackvalue list) : sinstr list =
             match b with
             | [] -> sinlst, cenv'
             | (str, exp) :: tail ->
-                let sinstrs = scomp exp cenv'
-                let newcenv = Bound str :: cenv'
-                bindings tail (sinstrs @ sinlst) newcenv
+                bindings tail (scomp exp cenv' @ sinlst) (Bound str :: cenv')
         
         let sinstrs, newcenv = bindings tup [] cenv
         let sinstrs2 = scomp ebody newcenv
