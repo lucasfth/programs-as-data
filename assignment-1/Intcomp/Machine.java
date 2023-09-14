@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /* Java implementation of a unified-stack abstract machine 
    sestoft@itu.dk * 2001-02-05 
 
@@ -21,13 +26,20 @@ class Machine {
     SCST = 0, SVAR = 1, SADD = 2, SSUB = 3, SMUL = 4, SPOP = 5, SSWAP = 6;
   
   public static void main(String[] args) {
-    final int[] rpn1 = { SCST, 17, SVAR, 0, SVAR, 1, SADD, SSWAP, SPOP };
-    System.out.println(seval(rpn1));
-    final int[] rpn2 = { SCST, 17, SCST, 22, SCST, 100, SVAR, 1, SMUL, 
-			 SSWAP, SPOP, SVAR, 1, SADD, SSWAP, SPOP };
-    System.out.println(seval(rpn2));
+      ArrayList<Integer> listOfint = new ArrayList<Integer>();
+      Scanner scanner;
+      try {
+            scanner = new Scanner(new File("../"+args[0]));
+            while(scanner.hasNext()){
+                  listOfint.add(scanner.nextInt());
+            }
+            int[] rpn3 = listOfint.stream().mapToInt(i -> i).toArray();
+            System.out.println(seval(rpn3));
+      } catch (FileNotFoundException e) {
+            e.printStackTrace();
+      }
   }
-
+  
   static int seval(int[] code) {
     int[] stack = new int[1000];	// evaluation and env stack
     int sp = -1;			// pointer to current stack top
