@@ -372,24 +372,46 @@ type stackvalue =
 
 (* Compilation to a list of instructions for a unified-stack machine *)
 
-// let rec scomp (e : expr) (cenv : stackvalue list) : sinstr list =
-//     match e with
-//     | CstI i -> [SCstI i]
-//     | Var x  -> [SVar (getindex cenv (Bound x))]
-//     | Let(x, erhs, ebody) -> 
-//           scomp erhs cenv @ scomp ebody (Bound x :: cenv) @ [SSwap; SPop]
-//     | Prim("+", e1, e2) -> 
-//           scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SAdd] 
-//     | Prim("-", e1, e2) -> 
-//           scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SSub] 
-//     | Prim("*", e1, e2) -> 
-//           scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SMul] 
-//     | Prim _ -> failwith "scomp: unknown operator";;
+let rec scomp (e : expr) (cenv : stackvalue list) : sinstr list =
+    match e with
+    | CstI i -> [SCstI i]
+    | Var x  -> [SVar (getindex cenv (Bound x))]
+    | Let(erhs, ebody) -> 
+        match erhs with 
+        |[x, r] -> 
+            let lvar = x;
+            let h = r;
+            scomp h cenv @ scomp ebody (Bound lvar :: cenv) @ [SSwap; SPop]
+        | _ -> failwith "Should not get here"
+            // scomp erhs cenv @ scomp ebody (Bound x :: cenv) @ [SSwap; SPop]
+    | Prim("+", e1, e2) -> 
+          scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SAdd] 
+    | Prim("-", e1, e2) -> 
+          scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SSub] 
+    | Prim("*", e1, e2) -> 
+          scomp e1 cenv @ scomp e2 (Value :: cenv) @ [SMul] 
+    | Prim _ -> failwith "scomp: unknown operator";;
 
-// let s1 = scomp e1 [];;
-// let s2 = scomp e2 [];;
-// let s3 = scomp e3 [];;
-// let s5 = scomp e5 [];;
+let s1 = scomp e1 [];;
+let s2 = scomp e2 [];;
+let s3 = scomp e3 [];;
+
+let sinstrToInt sn =
+    match sn with
+    | SCstI n -> [0; n]
+    | SVar n -> [1; n]
+    | SAdd -> [2]
+    | SSub -> [3]
+    | SMul -> [4]
+    | SPop -> [5]
+    | SSwap -> [6]
+
+let rec assemble (sn: sinstr list) =
+    let rec aux lst acc =
+        match lst with
+        | x :: tail -> aux tail (acc @ (sinstrToInt x))
+        | _ -> acc
+    aux sn []
 
 (* Output the integers in list inss to the text file called fname: *)
 

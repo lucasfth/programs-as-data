@@ -1,5 +1,3 @@
-package Intcomp;
-
 /* Java implementation of a unified-stack abstract machine 
    sestoft@itu.dk * 2001-02-05 
 
