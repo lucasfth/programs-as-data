@@ -21,15 +21,21 @@ The regex for matching on a string containing `a` and `b` where there had to be 
 
 NFA diagram
 ```mermaid
-stateDiagram-v2
+flowchart TD
 
-[*] --> 1 : ε
-1 --> 2 : a
-1 --> 3 : b
-2 --> 3 : b
-3 --> 1 : ε
-2 --> [*] : ε
-3 --> [*] : ε
+ids((start))
+id1((1))
+id2((2))
+id3((3))
+ide(((end)))
+
+ids -- ε --> id1
+id1 -- a --> id2
+id1 -- b --> id3
+id2 -- ε --> ide
+id2 -- b --> id3
+id3 -- ε --> ide
+id3 -- ε --> id1
 ```
 
 DFA diagram
