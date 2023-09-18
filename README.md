@@ -4,6 +4,14 @@
 
 fefa and luha
 
+## Table of contents
+
+<!--ts-->
+  * [Assignment 1](#assignment-1)
+  * [Assignment 2](#assignment-2)
+  * [Assignment 3](#assignment-3)
+<!--te-->
+
 ## Assignment 1
 
 Only changed Intcomp1.fs and Intro2.fs.
@@ -223,4 +231,107 @@ id3 -- b --> id2
 id4 -- a --> ide
 id5 -- a --> id5
 id5 -- b --> id2
+```
+
+### hellolex
+
+#### Question 1
+
+What are the regular expressions involved, and which semantic values are they associated with?
+
+The regex is `['0'-'9']` and can match a single  number between 0 and 9 inclusive.
+
+#### Question 2
+
+Generate the lexer out of the specification using a command prompt. Which additional file is generated during the process?
+
+How many states are there by the automaton of the lexer? Hint: Depending on setup, you can generate the lexer with the command fslex --unicode hello.fsl from the command prompt. You can get the number of the states of the automaton by reading the report output when the lexer is generated.
+
+## Assignment 3
+
+### Exercise 3.3
+
+Rightmost deriviation given `let z = (17) in z + 2 * 3 end EOF`
+
+let z = (17) in z + 2 * 3 end
+
+| rule | match case | some | pre recursive call |
+| --- | --- | --- | --- |
+| A | Expr EOF | **Expr**  EOF
+| F | LET NAME EQ Expr IN Expr END | LET **NAME** EQ Expr IN Expr END 
+| B | NAME | z |
+| | | LET z EQ **EXPR** IN EXPR END
+| E | LPAR Expr RPAR | (**Expr**)
+| C | CSTINT | 17 |
+| | | LET z EQ 17 IN **Expr** END
+| H | Expr PLUS Expr | **Expr** + Expr |
+| B | Name | z |
+| | | z + **Expr**
+| G | Expr TIMES Expr | **Expr** * Expr |
+| C | CSTINT | 2 |
+| | | 2 * **Expr**
+| C | CSTINT | 3 |
+| | | 2 * 3
+| | | 6
+| | | z + 6
+| | | LET z EQ 17 IN  z + 2 * 3 END
+| | | 
+
+| rule | current match |
+| --- | --- |
+| A | Expr EOF |
+| F | LET **NAME** EQ Expr IN Expr END EOF |
+| B | LET *z* EQ Expr IN Expr END EOF |
+| E | LET z EQ **(Expr)** IN Expr END EOF |
+| C | LET z EQ *17* IN Expr END EOF |
+| H | LET z EQ 17 IN **Expr PLUS Expr** END EOF |
+| B | LET z EQ 17 IN *z* PLUS **Expr** END EOF |
+| G | LET z EQ 17 IN z PLUS **Expr TIMES Expr** END EOF |
+| C | LET z EQ 17 IN z PLUS *2* TIMES **Expr** END EOF |
+| C | LET z EQ 17 IN z PLUS 2 TIMES *3* END EOF |
+
+### Exercise 3.4
+
+```mermaid
+flowchart TD
+
+main --> Expr
+main --> EOF
+Expr --> LET
+Expr --> NAME
+Expr --> EQ
+NAME --> z
+eq[=]
+EQ --> eq
+Expr --> LPAR
+lpar["("]
+LPAR --> lpar
+expr1[Expr]
+Expr --> expr1
+expr1 --> CSTINT
+CSTINT --> 17
+Expr --> RPAR
+rpar[")"]
+RPAR --> rpar
+Expr --> in
+expr2[Expr]
+Expr --> expr2
+name1[NAME]
+expr2 --> name1
+z1[z]
+name1 --> z1
+expr2 --> PLUS
+expr3[Expr]
+PLUS --> +
+expr2 --> expr3
+cstint1[CSTINT]
+expr3 --> cstint1
+cstint1 --> 2
+expr3 --> TIMES
+TIMES --> *
+cstint2[CSTINT]
+expr3 --> cstint2
+cstint2 --> 3
+Expr --> END
+
 ```
