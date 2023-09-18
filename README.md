@@ -253,31 +253,7 @@ How many states are there by the automaton of the lexer? Hint: Depending on setu
 
 Rightmost deriviation given `let z = (17) in z + 2 * 3 end EOF`
 
-let z = (17) in z + 2 * 3 end
-
-| rule | match case | some | pre recursive call |
-| --- | --- | --- | --- |
-| A | Expr EOF | **Expr**  EOF
-| F | LET NAME EQ Expr IN Expr END | LET **NAME** EQ Expr IN Expr END 
-| B | NAME | z |
-| | | LET z EQ **EXPR** IN EXPR END
-| E | LPAR Expr RPAR | (**Expr**)
-| C | CSTINT | 17 |
-| | | LET z EQ 17 IN **Expr** END
-| H | Expr PLUS Expr | **Expr** + Expr |
-| B | Name | z |
-| | | z + **Expr**
-| G | Expr TIMES Expr | **Expr** * Expr |
-| C | CSTINT | 2 |
-| | | 2 * **Expr**
-| C | CSTINT | 3 |
-| | | 2 * 3
-| | | 6
-| | | z + 6
-| | | LET z EQ 17 IN  z + 2 * 3 END
-| | | 
-
-| rule | current match |
+| rule | match |
 | --- | --- |
 | A | Expr EOF |
 | F | LET **NAME** EQ Expr IN Expr END EOF |
