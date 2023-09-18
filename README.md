@@ -7,9 +7,17 @@ fefa and luha
 ## Table of contents
 
 <!--ts-->
-  * [Assignment 1](#assignment-1)
-  * [Assignment 2](#assignment-2)
-  * [Assignment 3](#assignment-3)
+* [Assignment 1](#assignment-1)
+* [Assignment 2](#assignment-2)
+  * [Exercise 2.4 from PLC](#exercise-24-from-plc)
+  * [Exercise 2.5 from PLC](#exercise-25-from-plc)
+  * [Exercise 3.2 from PLC](#exercise-32-from-plc)
+  * [Exercise 2.1 from BCD](#exercise-21-from-bcd)
+  * [Exercise 2.2 from BCD](#exercise-22-from-bcd)
+* [Assignment 3](#assignment-3)
+  * [Exercise 3.3](#exercise-33)
+  * [Exercise 3.4](#exercise-34)
+  * [Exercise 3.6](#exercise-36)
 <!--te-->
 
 ## Assignment 1
@@ -311,3 +319,7 @@ cstint2 --> 3
 Expr --> END
 
 ```
+
+### Exercise 3.6
+
+
