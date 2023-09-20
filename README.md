@@ -17,6 +17,7 @@ fefa and luha
 * [Assignment 3](#assignment-3)
   * [Exercise 3.3](#exercise-33)
   * [Exercise 3.4](#exercise-34)
+  * [Exercise 3.5](#exercise-35)
   * [Exercise 3.6](#exercise-36)
 <!--te-->
 
@@ -320,6 +321,8 @@ Expr --> END
 
 ```
 
+### Exercise 3.5
+
+![screenshot](./screenshots/a3_e3_5.png)
+
 ### Exercise 3.6
-
-
