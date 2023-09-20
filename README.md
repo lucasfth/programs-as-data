@@ -263,16 +263,16 @@ Rightmost deriviation given `let z = (17) in z + 2 * 3 end EOF`
 
 | rule | match |
 | --- | --- |
-| A | Expr EOF |
-| F | LET **NAME** EQ Expr IN Expr END EOF |
-| B | LET *z* EQ Expr IN Expr END EOF |
-| E | LET z EQ **(Expr)** IN Expr END EOF |
-| C | LET z EQ *17* IN Expr END EOF |
-| H | LET z EQ 17 IN **Expr PLUS Expr** END EOF |
-| B | LET z EQ 17 IN *z* PLUS **Expr** END EOF |
-| G | LET z EQ 17 IN z PLUS **Expr TIMES Expr** END EOF |
-| C | LET z EQ 17 IN z PLUS *2* TIMES **Expr** END EOF |
-| C | LET z EQ 17 IN z PLUS 2 TIMES *3* END EOF |
+| A | **Expr** EOF |
+| F | LET NAME EQ Expr IN **Expr** END EOF |
+| H | LET NAME EQ Expr IN Expr PLUS **Expr** END EOF |
+| G | LET NAME EQ Expr IN Expr PLUS Expr TIMES **Expr** END EOF |
+| C | LET NAME EQ Expr IN Expr PLUS **Expr** TIMES 3 END EOF |
+| C | LET NAME EQ Expr IN **Expr** PLUS 2 TIMES 3 END EOF |
+| B | LET NAME EQ **Expr** IN z PLUS 2 TIMES 3 END EOF |
+| E | LET NAME EQ **(Expr)** IN z PLUS 2 TIMES 3 END EOF |
+| C | LET NAME EQ 17 IN z PLUS 2 TIMES 3 END EOF |
+| B | LET z EQ 17 IN z PLUS 2 TIMES 3 END EOF |
 
 ### Exercise 3.4
 
