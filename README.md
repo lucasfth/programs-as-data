@@ -349,3 +349,82 @@ let compString (str : string) : sinstr list =
 
 ### Exercise 3.7
 
+Changed following type in `Absyn.fs`
+
+```fsharp
+type expr = 
+  | CstI of int
+  | Var of string
+  | Let of string * expr * expr
+  | Prim of string * expr * expr
+  | If of expr * expr * expr
+```
+
+Changed following function in `Expr.fs`
+
+```fsharp
+let rec scomp e (cenv : rtvalue list) : sinstr list =
+    match e with
+      | CstI i -> [SCstI i]
+      | Var x  -> [SVar (getindex cenv (Bound x))]
+      | Let(x, erhs, ebody) -> 
+            scomp erhs cenv @ scomp ebody (Bound x :: cenv) @ [SSwap; SPop]
+      | If(cond, l1, l2) ->
+            let el1 = scomp l1 cenv
+            let el2 = scomp l2 cenv
+            scomp cond cenv @ [SIf(el1, el2)]
+      | Prim("+", e1, e2) -> 
+            scomp e1 cenv @ scomp e2 (Intrm :: cenv) @ [SAdd] 
+      | Prim("-", e1, e2) -> 
+            scomp e1 cenv @ scomp e2 (Intrm :: cenv) @ [SSub] 
+      | Prim("*", e1, e2) -> 
+            scomp e1 cenv @ scomp e2 (Intrm :: cenv) @ [SMul] 
+      | Prim _ -> raise (Failure "scomp: unknown operator")
+```
+
+Changed following type in `Expr.fs`
+
+```fsharp
+type sinstr =
+  | SCstI of int                        (* push integer           *)
+  | SVar of int                         (* push variable from env *)
+  | SAdd                                (* pop args, push sum     *)
+  | SSub                                (* pop args, push diff.   *)
+  | SMul                                (* pop args, push product *)
+  | SPop                                (* pop value/unbind var   *)
+  | SIf of sinstr list * sinstr list    (* pop test, then/else    *)
+  | SSwap                               (* exchange top and next  *)
+```
+
+Changed following keyword in `ExprLex.fsl`
+
+```fsharp
+let keyword s =
+    match s with
+    | "let" -> LET
+    | "in"  -> IN
+    | "if" -> IF
+    | "end" -> END
+    | _     -> NAME s
+```
+
+Added following token in `ExprPar.fsy`
+
+```fsharp
+%token IF
+```
+
+Changed following Expr in `ExprPar.fsy`
+
+```fsharp
+Expr:
+    NAME                                { Var $1            }
+  | CSTINT                              { CstI $1           }
+  | MINUS CSTINT                        { CstI (- $2)       }
+  | LPAR Expr RPAR                      { $2                }
+  | LET NAME EQ Expr IN Expr END        { Let($2, $4, $6)   }
+  | IF Expr Expr Expr                   { If($2, $3, $4)    }
+  | Expr TIMES Expr                     { Prim("*", $1, $3) }
+  | Expr PLUS  Expr                     { Prim("+", $1, $3) }  
+  | Expr MINUS Expr                     { Prim("-", $1, $3) } 
+```

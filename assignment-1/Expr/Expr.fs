@@ -267,6 +267,7 @@ type sinstr =
   | SSub                                (* pop args, push diff.   *)
   | SMul                                (* pop args, push product *)
   | SPop                                (* pop value/unbind var   *)
+  | SIf of sinstr list * sinstr list    (* pop test, then/else    *)
   | SSwap                               (* exchange top and next  *)
  
 let rec seval (inss : sinstr list) stack = 
@@ -304,6 +305,10 @@ let rec scomp e (cenv : rtvalue list) : sinstr list =
       | Var x  -> [SVar (getindex cenv (Bound x))]
       | Let(x, erhs, ebody) -> 
             scomp erhs cenv @ scomp ebody (Bound x :: cenv) @ [SSwap; SPop]
+      | If(cond, l1, l2) ->
+            let el1 = scomp l1 cenv
+            let el2 = scomp l2 cenv
+            scomp cond cenv @ [SIf(el1, el2)]
       | Prim("+", e1, e2) -> 
             scomp e1 cenv @ scomp e2 (Intrm :: cenv) @ [SAdd] 
       | Prim("-", e1, e2) -> 
