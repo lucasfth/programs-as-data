@@ -20,6 +20,7 @@ let fromString (str : string) : expr =
                failwithf "%s near line %d, column %d\n" 
                   (exn.Message) (pos.Line+1) pos.Column
 
+
 (* Parsing from a text file *)
 
 let fromFile (filename : string) =

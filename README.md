@@ -19,6 +19,7 @@ fefa and luha
   * [Exercise 3.4](#exercise-34)
   * [Exercise 3.5](#exercise-35)
   * [Exercise 3.6](#exercise-36)
+  * [Exercise 3.7](#exercise-37)
 <!--te-->
 
 ## Assignment 1
@@ -324,4 +325,27 @@ Expr --> END
 
 ![screenshot](./screenshots/a3_e3_5.png)
 
+<details>
+
+<summary> Commands to compile and run </summary>
+
+```bash
+mono ~/bin/fsharp/fslex.exe --unicode ExprLex.fsl
+mono ~/bin/fsharp/fsyacc.exe --module ExprPar ExprPar.fsy
+fsharpi -r ~/bin/fsharp/FsLexYacc.Runtime.dll Absyn.fs ExprPar.fs ExprLex.fs Parse.fs
+```
+
+</details>
+
 ### Exercise 3.6
+
+Added the `compString` function to `Expr.fs`. The code can be seen in the file and also below:
+
+```fsharp
+let compString (str : string) : sinstr list =
+    let e : expr = fromString str
+    scomp e []
+```
+
+### Exercise 3.7
+
