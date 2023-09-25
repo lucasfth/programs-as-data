@@ -441,6 +441,8 @@ Expr:
 
 <summary> Commands to compile and run </summary>
 
+</details>
+
 ```bash
 ~/bin/fsharp/fsyacc --module FunPar FunPar.fsy
 ~/bin/fsharp/fslex --unicode FunLex.fsl
@@ -449,4 +451,45 @@ fsharpi -r ~/bin/fsharp/FsLexYacc.Runtime.dll Absyn.fs FunPar.fs FunLex.fs Parse
 ~/bin/fsharp/fsyacc --module FunPar FunPar.fsy
 ~/bin/fsharp/fslex --unicode FunLex.fsl
 fsharpi -r ~/bin/fsharp/FsLexYacc.Runtime.dll Absyn.fs FunPar.fs FunLex.fs Parse.fs Fun.fs ParseAndRun.fs
+```
+
+### Exercise 4.2
+
+Given:
+
+```fsharp
+let sum = fromString "let sum n = if n > 0 then n + (sum (n - 1)) else 0 in sum 1000 end";;
+```
+
+Computes to:
+
+![screenshot](./screenshots/a4_e4_2_1.png)
+
+Given:
+
+```fsharp
+let power = fromString "let power n = if n > 0 then 3 * (power (n - 1)) else 1 in power 8 end";;
+```
+
+Computes to:
+
+![screenshot](./screenshots/a4_e4_2_2.png)
+
+Given:
+
+```fsharp
+let pow1 = fromString "let pow1 n = if n <= 11 then power n + (pow1 (n + 1)) else 0 in pow1 0 end";;
+```
+
+Computes to:
+
+![screenshot](./screenshots/a4_e4_2_3.png)
+
+Given:
+
+```fsharp
+// Not correct at all
+let power2 = fromString "let power2 n = if n > 0 then n * (power2 (n - 1)) else 1 in power2 8 end";;
+
+let pow2 = fromString "let pow2 n = if n <
 ```
