@@ -20,6 +20,8 @@ fefa and luha
   * [Exercise 3.5](#exercise-35)
   * [Exercise 3.6](#exercise-36)
   * [Exercise 3.7](#exercise-37)
+* [Assignment 4](#assignment-4)
+  * [Exercise 4.1](#exercise-41)
 <!--te-->
 
 ## Assignment 1
@@ -432,3 +434,19 @@ Expr:
 ## Assignment 4
 
 ### Exercise 4.1
+
+![screenshot](./screenshots/a4_e4_1.png)
+
+<details>
+
+<summary> Commands to compile and run </summary>
+
+```bash
+~/bin/fsharp/fsyacc --module FunPar FunPar.fsy
+~/bin/fsharp/fslex --unicode FunLex.fsl
+fsharpi -r ~/bin/fsharp/FsLexYacc.Runtime.dll Absyn.fs FunPar.fs FunLex.fs Parse.fs
+
+~/bin/fsharp/fsyacc --module FunPar FunPar.fsy
+~/bin/fsharp/fslex --unicode FunLex.fsl
+fsharpi -r ~/bin/fsharp/FsLexYacc.Runtime.dll Absyn.fs FunPar.fs FunLex.fs Parse.fs Fun.fs ParseAndRun.fs
+```
