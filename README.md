@@ -428,3 +428,7 @@ Expr:
   | Expr PLUS  Expr                     { Prim("+", $1, $3) }  
   | Expr MINUS Expr                     { Prim("-", $1, $3) } 
 ```
+
+## Assignment 4
+
+### Exercise 4.1
