@@ -82,3 +82,10 @@ let pow1 = fromString
                 in pow1 0
                 end
               end";;
+
+let pow2 = fromString
+              @"let power x = x*x*x*x*x*x*x*x
+                in let pow1 n = if n < 11 then power n + pow1 (n + 1) else 0
+                in pow1 0
+                end
+              end";;
