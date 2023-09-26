@@ -70,3 +70,15 @@ let ex5 = fromString
                  in fib 25 
                  end
               end";;
+
+(* Assignment 4.2 *)
+let sum = fromString "let sum n = if n < 1 then 0 else n + (sum (n - 1)) in sum 1000 end";;
+
+let power = fromString "let power n = if n < 1 then 1 else 3 * (power (n - 1)) in power 8 end";;
+
+let pow1 = fromString
+              @"let power x = if x < 1 then 1 else 3 * (power (x - 1))
+                in let pow1 n = if n < 12 then power n + pow1 (n + 1) else 0
+                in pow1 0
+                end
+              end";;
