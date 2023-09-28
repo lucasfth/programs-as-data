@@ -465,7 +465,6 @@ run sum;;
 
 Computes to:
 
-TODO update screenshot
 ![screenshot](./screenshots/a4_e4_2_1.png)
 
 Given:
@@ -478,7 +477,6 @@ run threeToTheEight;;
 
 Computes to:
 
-TODO update screenshot
 ![screenshot](./screenshots/a4_e4_2_2.png)
 
 Given:
@@ -491,7 +489,6 @@ run exponentIncrease;;
 
 Computes to:
 
-TODO update screenshot
 ![screenshot](./screenshots/a4_e4_2_3.png)
 
 Given:
@@ -504,7 +501,7 @@ run baseIncrease;;
 
 Computes to:
 
-![TODO](TODO)
+![screenshot](./screenshots/a4_e4_2_4.png)
 
 ### Exercise 4.3
 
@@ -600,7 +597,7 @@ AppExpr:
 
 Proof of being able to run the functions:
 
-![TODO](TODO)
+![screenshot](./screenshots/a4_e4_4.png)
 
 ### Exercise 4.5
 
