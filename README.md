@@ -458,38 +458,159 @@ fsharpi -r ~/bin/fsharp/FsLexYacc.Runtime.dll Absyn.fs FunPar.fs FunLex.fs Parse
 Given:
 
 ```fsharp
-let sum = fromString "let sum n = if n > 0 then n + (sum (n - 1)) else 0 in sum 1000 end";;
+let sum = fromString "let sum n = if n < 1 then 0 else n + (sum (n - 1)) in sum 1000 end";;
+
+run sum;;
 ```
 
 Computes to:
 
+TODO update screenshot
 ![screenshot](./screenshots/a4_e4_2_1.png)
 
 Given:
 
 ```fsharp
-let power = fromString "let power n = if n > 0 then 3 * (power (n - 1)) else 1 in power 8 end";;
+let threeToTheEight = fromString "let power n = if n < 1 then 1 else 3 * (power (n - 1)) in power 8 end";;
+
+run threeToTheEight;;
 ```
 
 Computes to:
 
+TODO update screenshot
 ![screenshot](./screenshots/a4_e4_2_2.png)
 
 Given:
 
 ```fsharp
-let pow1 = fromString "let pow1 n = if n <= 11 then power n + (pow1 (n + 1)) else 0 in pow1 0 end";;
+let exponentIncrease = fromString
+              @"let power x = if x < 1 then 1 else 3 * (power (x - 1))
+                in let pow1 n = if n < 12 then power n + pow1 (n + 1) else 0
+                in pow1 0
+                end
+              end";;
+
+run exponentIncrease;;
 ```
 
 Computes to:
 
+TODO update screenshot
 ![screenshot](./screenshots/a4_e4_2_3.png)
 
 Given:
 
 ```fsharp
-// Not correct at all
-let power2 = fromString "let power2 n = if n > 0 then n * (power2 (n - 1)) else 1 in power2 8 end";;
+let baseIncrease = fromString
+              @"let power x = x*x*x*x*x*x*x*x
+                in let pow1 n = if n < 11 then power n + pow1 (n + 1) else 0
+                in pow1 0
+                end
+              end";;
 
-let pow2 = fromString "let pow2 n = if n <
+run baseIncrease;;
 ```
+
+Computes to:
+
+![TODO](TODO)
+
+### Exercise 4.3
+
+In Fun.fs the type `value` and the `eval` function was modified to look like this:
+
+```fsharp
+type value = 
+  | Int of int
+  | Closure of string * string list * expr * value env       (* (f, x, fBody, fDeclEnv) *)
+
+let rec eval (e : expr) (env : value env) : int =
+    match e with 
+    | CstI i -> i
+    | CstB b -> if b then 1 else 0
+    | Var x  ->
+      match lookup env x with
+      | Int i -> i 
+      | _     -> failwith "eval Var"
+    | Prim(ope, e1, e2) -> 
+      let i1 = eval e1 env
+      let i2 = eval e2 env
+      match ope with
+      | "*" -> i1 * i2
+      | "+" -> i1 + i2
+      | "-" -> i1 - i2
+      | "=" -> if i1 = i2 then 1 else 0
+      | "<" -> if i1 < i2 then 1 else 0
+      | _   -> failwith ("unknown primitive " + ope)
+    | Let(x, eRhs, letBody) -> 
+      let xVal = Int(eval eRhs env)
+      let bodyEnv = (x, xVal) :: env
+      eval letBody bodyEnv
+    | If(e1, e2, e3) -> 
+      let b = eval e1 env
+      if b<>0 then eval e2 env
+      else eval e3 env
+    | Letfun(f, x, fBody, letBody) -> 
+      let bodyEnv = (f, Closure(f, x, fBody, env)) :: env 
+      eval letBody bodyEnv
+    | Call(Var f, eArgList) ->
+      let fClosure = lookup env f
+      match fClosure with
+      | Closure (f, xList, fBody, fDeclEnv) -> 
+        let vals = List.map2 (fun x y -> (x, Int(eval y env))) xList eArgList 
+        let fBodyEnv = vals @ (f, fClosure) :: fDeclEnv 
+        eval fBody fBodyEnv
+      | _ -> failwith "eval Call: not a function"
+    | Call _ -> failwith "eval Call: not first-order function"
+```
+
+In Absyn.fs the type `expr` was modified to the following:
+
+```fsharp
+type expr = 
+  | CstI of int
+  | CstB of bool
+  | Var of string
+  | Let of string * expr * expr
+  | Prim of string * expr * expr
+  | If of expr * expr * expr
+  | Letfun of string * string list * expr * expr    (* (f, x, fBody, letBody) *)
+  | Call of expr * expr list
+```
+
+In FynPar.fsy the follwing expressions where modified to:
+
+```fsharp
+AtExpr:
+    Const                               { $1                     }
+  | NAME                                { Var $1                 }
+  | LET NAME EQ Expr IN Expr END        { Let($2, $4, $6)        }
+  | LET NAME ArgExpr EQ Expr IN Expr END  { Letfun($2, $3, $5, $7) }
+  | LPAR Expr RPAR                      { $2                     }
+;
+
+ArgExpr:                                                           
+    NAME                                { [$1]                   }
+  | NAME ArgExpr                        { $1 :: $2               }
+;
+
+AppArgExpr:
+    AtExpr                              { [$1]                   }
+  | AtExpr AppArgExpr                   { $1 :: $2               }
+;
+
+AppExpr:
+    AtExpr AppArgExpr                   { Call($1, $2)           }
+  | AppExpr AppArgExpr                  { Call($1, $2)           }
+;
+```
+
+### Exercise 4.4
+
+Proof of being able to run the functions:
+
+![TODO](TODO)
+
+### Exercise 4.5
+

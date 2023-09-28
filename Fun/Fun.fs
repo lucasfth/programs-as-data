@@ -24,7 +24,7 @@ let rec lookup env x =
 
 type value = 
   | Int of int
-  | Closure of string * string * expr * value env       (* (f, x, fBody, fDeclEnv) *)
+  | Closure of string * string list * expr * value env       (* (f, x, fBody, fDeclEnv) *)
 
 let rec eval (e : expr) (env : value env) : int =
     match e with 
@@ -55,18 +55,18 @@ let rec eval (e : expr) (env : value env) : int =
     | Letfun(f, x, fBody, letBody) -> 
       let bodyEnv = (f, Closure(f, x, fBody, env)) :: env 
       eval letBody bodyEnv
-    | Call(Var f, eArg) -> 
+    | Call(Var f, eArgList) ->
       let fClosure = lookup env f
       match fClosure with
-      | Closure (f, x, fBody, fDeclEnv) ->
-        let xVal = Int(eval eArg env)
-        let fBodyEnv = (x, xVal) :: (f, fClosure) :: fDeclEnv
+      | Closure (f, xList, fBody, fDeclEnv) -> 
+        let vals = List.map2 (fun x y -> (x, Int(eval y env))) xList eArgList 
+        let fBodyEnv = vals @ (f, fClosure) :: fDeclEnv 
         eval fBody fBodyEnv
       | _ -> failwith "eval Call: not a function"
     | Call _ -> failwith "eval Call: not first-order function"
 
 (* Evaluate in empty environment: program must have no free variables: *)
-
+(*
 let run e = eval e [];;
 
 (* Examples in abstract syntax *)
@@ -112,5 +112,5 @@ let ex5 =
                      Prim("+",
                           Call(Var "fib", Prim("-", Var "n", CstI 1)),
                           Call(Var "fib", Prim("-", Var "n", CstI 2))),
-                     CstI 1), Call(Var "fib", CstI 25)));;
+                     CstI 1), Call(Var "fib", CstI 25)));;*)
                      

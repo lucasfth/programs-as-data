@@ -71,21 +71,11 @@ let ex5 = fromString
                  end
               end";;
 
-(* Assignment 4.2 *)
-let sum = fromString "let sum n = if n < 1 then 0 else n + (sum (n - 1)) in sum 1000 end";;
+(*Exercise 4.3/4.4*)
+let pow = fromString "let pow x n = if n=0 then 1 else x * pow x (n-1) in pow 3 8 end";;
 
-let power = fromString "let power n = if n < 1 then 1 else 3 * (power (n - 1)) in power 8 end";;
-
-let pow1 = fromString
-              @"let power x = if x < 1 then 1 else 3 * (power (x - 1))
-                in let pow1 n = if n < 12 then power n + pow1 (n + 1) else 0
-                in pow1 0
-                end
-              end";;
-
-let pow2 = fromString
-              @"let power x = x*x*x*x*x*x*x*x
-                in let pow1 n = if n < 11 then power n + pow1 (n + 1) else 0
-                in pow1 0
-                end
+let maxABC = fromString
+              @"let max2 a b = if a<b then b else a
+                in let max3 a b c = max2 a (max2 b c)
+                in max3 25 6 62 end
               end";;
