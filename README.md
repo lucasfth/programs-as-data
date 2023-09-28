@@ -22,6 +22,10 @@ fefa and luha
   * [Exercise 3.7](#exercise-37)
 * [Assignment 4](#assignment-4)
   * [Exercise 4.1](#exercise-41)
+  * [Exercise 4.2](#exercise-42)
+  * [Exercise 4.3](#exercise-43)
+  * [Exercise 4.4](#exercise-44)
+  * [Exercise 4.5](#exercise-45)
 <!--te-->
 
 ## Assignment 1
