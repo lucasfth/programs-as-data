@@ -70,8 +70,3 @@ let ex5 = fromString
                  in fib 25 
                  end
               end";;
-
-(*Exercise 4.3/4.4*)
-let pow = fromString "let pow x n = if n=0 then 1 else x * pow x (n-1) in pow 3 8 end";;
-
-let maxABC = fromString @"let max2 a b = if a<b then b else a in let max3 a b c = max2 a (max2 b c) in max3 25 6 62 end end";;
