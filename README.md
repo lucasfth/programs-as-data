@@ -484,12 +484,7 @@ TODO update screenshot
 Given:
 
 ```fsharp
-let exponentIncrease = fromString
-              @"let power x = if x < 1 then 1 else 3 * (power (x - 1))
-                in let pow1 n = if n < 12 then power n + pow1 (n + 1) else 0
-                in pow1 0
-                end
-              end";;
+let exponentIncrease = fromString @"let power x = if x < 1 then 1 else 3 * (power (x - 1)) in let pow1 n = if n < 12 then power n + pow1 (n + 1) else 0 in pow1 0 end end";;
 
 run exponentIncrease;;
 ```
@@ -502,12 +497,7 @@ TODO update screenshot
 Given:
 
 ```fsharp
-let baseIncrease = fromString
-              @"let power x = x*x*x*x*x*x*x*x
-                in let pow1 n = if n < 11 then power n + pow1 (n + 1) else 0
-                in pow1 0
-                end
-              end";;
+let baseIncrease = fromString @"let power x = x*x*x*x*x*x*x*x in let pow1 n = if n < 11 then power n + pow1 (n + 1) else 0 in pow1 0 end end";;
 
 run baseIncrease;;
 ```
@@ -579,7 +569,7 @@ type expr =
   | Call of expr * expr list
 ```
 
-In FynPar.fsy the follwing expressions where modified to:
+In FunPar.fsy the follwing expressions where modified to:
 
 ```fsharp
 AtExpr:
@@ -614,3 +604,66 @@ Proof of being able to run the functions:
 
 ### Exercise 4.5
 
+In FunLex.fsl the rule "&&" and "||" were added 
+
+```fsharp
+rule Token = parse
+  | [' ' '\t' '\r'] { Token lexbuf }
+  | '\n'            { lexbuf.EndPos <- lexbuf.EndPos.NextLine; Token lexbuf }
+  | ['0'-'9']+      { CSTINT (System.Int32.Parse (lexemeAsString lexbuf)) }
+  | ['a'-'z''A'-'Z']['a'-'z''A'-'Z''0'-'9']*
+                    { keyword (lexemeAsString lexbuf) }
+  | "(*"            { commentStart := lexbuf.StartPos;
+                      commentDepth := 1; 
+                      SkipComment lexbuf; Token lexbuf }
+  | '='             { EQ }
+  | "<>"            { NE }
+  | '>'             { GT }
+  | '<'             { LT }
+  | ">="            { GE }
+  | "<="            { LE }
+  | '+'             { PLUS }                     
+  | '-'             { MINUS }                     
+  | '*'             { TIMES }                     
+  | '/'             { DIV }                     
+  | '%'             { MOD }
+  | '('             { LPAR }
+  | ')'             { RPAR }
+  | "&&"            { AND } 
+  | "||"            { OR  }
+  | eof             { EOF }
+  | _               { failwith "Lexer error: illegal symbol" }
+```
+
+In FunPar.fsy the following tokens and Expr were added for AND & OR
+
+```fsharp
+%token ELSE END FALSE IF IN LET NOT THEN TRUE
+%token PLUS MINUS TIMES DIV MOD
+%token EQ NE GT LT GE LE
+%token LPAR RPAR
+%token AND
+%token OR
+%token EOF
+```
+
+```fsharp
+Expr:
+    AtExpr                              { $1                     }
+  | AppExpr                             { $1                     }
+  | IF Expr THEN Expr ELSE Expr         { If($2, $4, $6)         }
+  | MINUS Expr                          { Prim("-", CstI 0, $2)  }
+  | Expr PLUS  Expr                     { Prim("+",  $1, $3)     }
+  | Expr MINUS Expr                     { Prim("-",  $1, $3)     }
+  | Expr TIMES Expr                     { Prim("*",  $1, $3)     }
+  | Expr DIV   Expr                     { Prim("/",  $1, $3)     } 
+  | Expr MOD   Expr                     { Prim("%",  $1, $3)     }
+  | Expr EQ    Expr                     { Prim("=",  $1, $3)     }
+  | Expr NE    Expr                     { Prim("<>", $1, $3)     }
+  | Expr GT    Expr                     { Prim(">",  $1, $3)     }
+  | Expr LT    Expr                     { Prim("<",  $1, $3)     }
+  | Expr GE    Expr                     { Prim(">=", $1, $3)     }
+  | Expr LE    Expr                     { Prim("<=", $1, $3)     }
+  | Expr OR    Expr                     { If($1, CstB(true), $3) }
+  | Expr AND   Expr                     { If($1, $3, CstB(false))}
+```
