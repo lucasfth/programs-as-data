@@ -730,7 +730,11 @@ The input and output looks as following:
 
 ### Exercise 5.7
 
+Er det ikke allerede gjort??
+
 ### Exercise 6.1
+
+
 
 ### Exercise 6.2
 
