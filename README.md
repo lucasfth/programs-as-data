@@ -26,6 +26,13 @@ fefa and luha
   * [Exercise 4.3](#exercise-43)
   * [Exercise 4.4](#exercise-44)
   * [Exercise 4.5](#exercise-45)
+* [Assignment 5](#assignment-5)
+  * [Exercise 5.1](#exercise-51)
+  * [Exercise 5.7](#exercise-57)
+  * [Exercise 6.1](#exercise-61)
+  * [Exercise 6.2](#exercise-62)
+  * [Exercise 6.4](#exercise-64)
+  * [Exercise 6.5](#exercise-65)
 <!--te-->
 
 ## Assignment 1
@@ -668,3 +675,19 @@ Expr:
   | Expr OR    Expr                     { If($1, CstB(true), $3) }
   | Expr AND   Expr                     { If($1, $3, CstB(false))}
 ```
+
+## Assignment 5
+
+### Exercise 5.1
+
+### Exercise 5.7
+
+### Exercise 6.1
+
+### Exercise 6.2
+
+### Exercise 6.3
+
+### Exercise 6.4
+
+### Exercise 6.5
