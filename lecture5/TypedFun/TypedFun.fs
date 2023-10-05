@@ -140,6 +140,10 @@ let rec typ (e : tyexpr) (env : typ env) : typ =
         else failwith "Call: wrong argument type"
       | _ -> failwith "Call: unknown function"
     | Call(_, eArg) -> failwith "Call: illegal function in call"
+    | ListExpr(elist, lTyp) ->
+      let ebool = List.forall(fun e -> (typ e env) = lTyp) elist
+      if ebool then TypL lTyp
+      else failwith "not all elements are typ"
 
 let typeCheck e = typ e [];;
 

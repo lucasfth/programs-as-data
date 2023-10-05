@@ -618,7 +618,7 @@ Proof of being able to run the functions:
 
 ### Exercise 4.5
 
-In FunLex.fsl the rule "&&" and "||" were added 
+In FunLex.fsl the rule "&&" and "||" were added
 
 ```fsharp
 rule Token = parse
@@ -749,13 +749,86 @@ The input and output looks as following:
 
 ### Exercise 5.7
 
-Er det ikke allerede gjort??
+We made additions to `type` in `TypedFun.fs` in the case that matches on `ListExpr`:
+
+```fsharp
+let rec typ (e : tyexpr) (env : typ env) : typ =
+    match e with
+    | CstI i -> TypI
+    | CstB b -> TypB
+    | Var x  -> lookup env x 
+    | Prim(ope, e1, e2) -> 
+      let t1 = typ e1 env
+      let t2 = typ e2 env
+      match (ope, t1, t2) with
+      | ("*", TypI, TypI) -> TypI
+      | ("+", TypI, TypI) -> TypI
+      | ("-", TypI, TypI) -> TypI
+      | ("=", TypI, TypI) -> TypB
+      | ("<", TypI, TypI) -> TypB
+      | ("&", TypB, TypB) -> TypB
+      | _   -> failwith "unknown op, or type error"
+    | Let(x, eRhs, letBody) -> 
+      let xTyp = typ eRhs env
+      let letBodyEnv = (x, xTyp) :: env 
+      typ letBody letBodyEnv
+    | If(e1, e2, e3) -> 
+      match typ e1 env with
+      | TypB -> let t2 = typ e2 env
+                let t3 = typ e3 env
+                if t2 = t3 then t2
+                else failwith "If: branch types differ"
+      | _    -> failwith "If: condition not boolean"
+    | Letfun(f, x, xTyp, fBody, rTyp, letBody) -> 
+      let fTyp = TypF(xTyp, rTyp) 
+      let fBodyEnv = (x, xTyp) :: (f, fTyp) :: env
+      let letBodyEnv = (f, fTyp) :: env
+      if typ fBody fBodyEnv = rTyp
+      then typ letBody letBodyEnv
+      else failwith ("Letfun: return type in " + f)
+    | Call(Var f, eArg) -> 
+      match lookup env f with
+      | TypF(xTyp, rTyp) ->
+        if typ eArg env = xTyp then rTyp
+        else failwith "Call: wrong argument type"
+      | _ -> failwith "Call: unknown function"
+    | Call(_, eArg) -> failwith "Call: illegal function in call"
+    | ListExpr(elist, lTyp) ->
+      let ebool = List.forall(fun e -> (typ e env) = lTyp) elist
+      if ebool then TypL lTyp
+      else failwith "not all elements are typ"
+```
 
 ### Exercise 6.1
 
+![screenshot](./screenshots/a5_e6_1.png)
 
+The result of the third is as expected since the function `addtwo` has its x value bound to 2.
+Then `addtwo` is called with 5 as argument, which is then evaluates to 7.
+
+The last output is a closure since the function is missing an argument `y` and therefore is not fully evaluated.
 
 ### Exercise 6.2
+
+Added following to `eval` in `HigherFun.fs`
+
+```fsharp
+| Fun(str, e) -> 
+  Clos(str, e, env)
+```
+
+Added `Clos` to type value in `HigherFun.fs`
+
+```fsharp
+type value = 
+  | Int of int
+  | Closure of string * string * expr * value env       (* (f, x, fBody, fDeclEnv) *)
+  | Clos of string * expr * value env 
+```
+
+When it was ran it evaluated to the following:
+
+![screenshot](./screenshots/a5_e6_2.png)
 
 ### Exercise 6.3
 

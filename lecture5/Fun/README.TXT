@@ -63,9 +63,20 @@ E. Using the lexer, parser and higher-order evaluator together:
    fsharpi -r ~/fsharp/FsLexYacc.Runtime.dll Absyn.fs FunPar.fs FunLex.fs Parse.fs HigherFun.fs ParseAndRunHigher.fs
 
    open ParseAndRunHigher;;
-   run (fromString @"let twice f = let g x = f(f(x)) in g end 
-                     in let mul3 z = z*3 in twice mul3 2 end end");;
+   run (fromString @"let twice f = let g x = f(f(x)) in g end in let mul3 z = z*3 in twice mul3 2 end end");;
 
+   run (fromString @"let add x = let f y = x+y in f end in add 2 5 end");;
+
+   run (fromString @"let add x = let f y = x+y in f end in let addtwo = add 2 in addtwo 5 end end");;
+
+   run (fromString @"let add x = let f y = x+y in f end 
+                        in let addtwo = add 2 
+                           in let x = 77 in addtwo 5 end 
+                              end 
+                        end");;
+   
+   run (fromString @"let add x = let f y = x+y in f end in add 2 end");;
+   
 F. Using the lexer, parser and polymorphic type inference together:
 
    fsyacc --module FunPar FunPar.fsy
