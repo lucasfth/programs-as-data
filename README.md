@@ -928,7 +928,7 @@ Expr:
   | FUN NAME LAMBDA Expr                { Fun($2, $4)            }
 ```
 
-`TODO: ADD SCREENSHOT WHEN RUNNING:`
+![screenshot](./screenshots/a5_e6_3.png)
 
 ```fsharp
 let e6_1 = fromString @"let add x = fun y -> x+y in add 2 5 end";;
@@ -939,5 +939,7 @@ run e6_2;;
 ```
 
 ### Exercise 6.4
+
+
 
 ### Exercise 6.5
