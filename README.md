@@ -814,7 +814,20 @@ Added following to `eval` in `HigherFun.fs`
 
 ```fsharp
 | Fun(str, e) -> 
-  Clos(str, e, env)
+      Clos(str, e, env)
+    | Call(eFun, eArg) -> 
+      let fClosure = eval eFun env
+      match fClosure with
+      | Closure (f, x, fBody, fDeclEnv) ->
+        let xVal = eval eArg env
+        let fBodyEnv = (x, xVal) :: (f, fClosure) :: fDeclEnv
+        in eval fBody fBodyEnv
+      | Clos(str, e, env) ->
+        let xVal = eval eArg env
+        let bodyEnv = (str, xVal) :: env
+        eval e bodyEnv
+      | _ -> failwith "eval Call: not a function";;
+
 ```
 
 Added `Clos` to type value in `HigherFun.fs`
@@ -832,7 +845,98 @@ When it was ran it evaluated to the following:
 
 ### Exercise 6.3
 
+Added keyword `fun` in `FunLex.fsl`
 
+```fsharp
+let keyword s =
+    match s with
+    | "else"  -> ELSE 
+    | "end"   -> END
+    | "false" -> CSTBOOL false
+    | "if"    -> IF
+    | "in"    -> IN
+    | "fun"   -> FUN
+    | "let"   -> LET
+    | "not"   -> NOT
+    | "then"  -> THEN
+    | "true"  -> CSTBOOL true
+    | _       -> NAME s
+```
+
+and `Lambda` rule token in `FunLex.fsl`
+
+```fsharp
+rule Token = parse
+  | [' ' '\t' '\r'] { Token lexbuf }
+  | '\n'            { lexbuf.EndPos <- lexbuf.EndPos.NextLine; Token lexbuf }
+  | ['0'-'9']+      { CSTINT (System.Int32.Parse (lexemeAsString lexbuf)) }
+  | ['a'-'z''A'-'Z']['a'-'z''A'-'Z''0'-'9']*
+                    { keyword (lexemeAsString lexbuf) }
+  | "(*"            { commentStart := lexbuf.StartPos;
+                      commentDepth := 1; 
+                      SkipComment lexbuf; Token lexbuf }
+  | '='             { EQ }
+  | "<>"            { NE }
+  | '>'             { GT }
+  | '<'             { LT }
+  | "->"            { LAMBDA }
+  | ">="            { GE }
+  | "<="            { LE }
+  | '+'             { PLUS }                     
+  | '-'             { MINUS }                     
+  | '*'             { TIMES }                     
+  | '/'             { DIV }                     
+  | '%'             { MOD }
+  | '('             { LPAR }
+  | ')'             { RPAR }
+  | eof             { EOF }
+  | _               { failwith "Lexer error: illegal symbol" }
+```
+
+Added following `tokens` in `FunPar.fsy`
+
+```fsharp
+%token LAMBDA
+%token FUN
+```
+
+and `precedence` for `LAMBDA` in `FunPar.fsy`
+
+```fsharp
+%right LAMBDA
+```
+
+and following `Expr:` `FUN NAME LAMBDA Expr` in `FunPar.fsy`
+
+```fsharp 
+Expr:
+    AtExpr                              { $1                     }
+  | AppExpr                             { $1                     }
+  | IF Expr THEN Expr ELSE Expr         { If($2, $4, $6)         }
+  | MINUS Expr                          { Prim("-", CstI 0, $2)  }
+  | Expr PLUS  Expr                     { Prim("+",  $1, $3)     }
+  | Expr MINUS Expr                     { Prim("-",  $1, $3)     }
+  | Expr TIMES Expr                     { Prim("*",  $1, $3)     }
+  | Expr DIV   Expr                     { Prim("/",  $1, $3)     } 
+  | Expr MOD   Expr                     { Prim("%",  $1, $3)     }
+  | Expr EQ    Expr                     { Prim("=",  $1, $3)     }
+  | Expr NE    Expr                     { Prim("<>", $1, $3)     }
+  | Expr GT    Expr                     { Prim(">",  $1, $3)     }
+  | Expr LT    Expr                     { Prim("<",  $1, $3)     }
+  | Expr GE    Expr                     { Prim(">=", $1, $3)     }
+  | Expr LE    Expr                     { Prim("<=", $1, $3)     }
+  | FUN NAME LAMBDA Expr                { Fun($2, $4)            }
+```
+
+`TODO: ADD SCREENSHOT WHEN RUNNING:`
+
+```fsharp
+let e6_1 = fromString @"let add x = fun y -> x+y in add 2 5 end";;
+run e6_1;;
+
+let e6_2 = fromString @"let add = fun x -> fun y -> x+y in add 2 5 end";;
+run e6_2;;
+```
 
 ### Exercise 6.4
 

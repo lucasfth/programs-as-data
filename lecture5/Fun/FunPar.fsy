@@ -53,7 +53,7 @@ Expr:
   | Expr LT    Expr                     { Prim("<",  $1, $3)     }
   | Expr GE    Expr                     { Prim(">=", $1, $3)     }
   | Expr LE    Expr                     { Prim("<=", $1, $3)     }
-  | FUN NAME LAMBDA Expr                { Fun($2, $4)         }
+  | FUN NAME LAMBDA Expr                { Fun($2, $4)            }
 ;
 
 AtExpr:

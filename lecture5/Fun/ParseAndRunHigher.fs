@@ -59,7 +59,3 @@ let ex9 =
        in let mul3 x = 3 * x 
        in let twototen = (rep 10) mul3 
        in twototen 7 end end end"
-
-let six = fromString @"let add x = fun y -> x+y in add 2 5 end"
-
-let six2 = fromString @"let add = fun x -> fun y -> x+y in add 2 5 end"
