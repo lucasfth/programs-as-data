@@ -14,6 +14,8 @@ public class test {
         int[] mrg = merge(lst1, lst2);
 
         System.out.println("Merged: " + Arrays.toString(mrg));
+
+        sc.close();
     }
 
     public static int[] merge(int[] lst1, int[] lst2){
