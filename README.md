@@ -26,6 +26,13 @@ fefa and luha
   * [Exercise 4.3](#exercise-43)
   * [Exercise 4.4](#exercise-44)
   * [Exercise 4.5](#exercise-45)
+* [Assignment 5](#assignment-5)
+  * [Exercise 5.1](#exercise-51)
+  * [Exercise 5.7](#exercise-57)
+  * [Exercise 6.1](#exercise-61)
+  * [Exercise 6.2](#exercise-62)
+  * [Exercise 6.4](#exercise-64)
+  * [Exercise 6.5](#exercise-65)
 <!--te-->
 
 ## Assignment 1
@@ -687,3 +694,71 @@ Expr:
   | Expr OR    Expr                     { If($1, CstB(true), $3) }
   | Expr AND   Expr                     { If($1, $3, CstB(false))}
 ```
+
+## Assignment 5
+
+### Exercise 5.1
+
+The code for merge in f sharp looks as the following (and can be found in `./assignment-5/test.fs`):
+
+```fsharp
+let merge (lst1, lst2) =
+    let rec aux l1 l2 acc =
+        match (l1, l2) with
+        | e1 :: tail1, e2 :: _ when e1 < e2 -> aux tail1 l2 (e1 :: acc)
+        | e1 :: _, e2 :: tail2 when e1 >= e2 -> aux l1 tail2 (e2 :: acc)
+        | l, [] | [], l -> (acc |> List.rev) @ l 
+        | _ -> acc |> List.rev
+    aux lst1 lst2 []
+```
+
+The input and output looks as following:
+
+![screenshot](./screenshots/a5_e5_1_1.png)
+
+The code for merge in java looks as the following (and can be found in `./assignment-5/test.java`):
+
+```java
+public static int[] merge(int[] lst1, int[] lst2){
+    int[] merged = new int [(lst1.length + lst2.length)];
+    int cntm = 0, cnt1 = 0, cnt2 = 0;
+
+    while (cnt1 < lst1.length && cnt2 < lst2.length){
+        if (lst1[cnt1] < lst2[cnt2]) {
+            merged[cntm++] = lst1[cnt1++];
+        } else {
+            merged[cntm++] = lst2[cnt2++];
+        }
+    }
+
+    while (cnt1 < lst1.length) {
+        merged[cntm++] = lst1[cnt1++];
+    }
+
+    while (cnt2 < lst2.length) {
+        merged[cntm++] = lst2[cnt2++];
+    }
+
+    return merged;
+}
+```
+
+The input and output looks as following:
+
+![screenshot](./screenshots/a5_e5_1_2.png)
+
+### Exercise 5.7
+
+Er det ikke allerede gjort??
+
+### Exercise 6.1
+
+
+
+### Exercise 6.2
+
+### Exercise 6.3
+
+### Exercise 6.4
+
+### Exercise 6.5
