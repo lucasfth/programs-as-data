@@ -577,24 +577,30 @@ AtExpr:
     Const                               { $1                     }
   | NAME                                { Var $1                 }
   | LET NAME EQ Expr IN Expr END        { Let($2, $4, $6)        }
-  | LET NAME ArgExpr EQ Expr IN Expr END  { Letfun($2, $3, $5, $7) }
+  | LET NAME List EQ Expr IN Expr END   { Letfun($2, $3, $5, $7) }
   | LPAR Expr RPAR                      { $2                     }
 ;
 
-ArgExpr:                                                           
-    NAME                                { [$1]                   }
-  | NAME ArgExpr                        { $1 :: $2               }
+List:
+    NAME                                { [$1]                    }
+  | NAME List                           { $1 :: $2                }
 ;
 
-AppArgExpr:
-    AtExpr                              { [$1]                   }
-  | AtExpr AppArgExpr                   { $1 :: $2               }
+ArgsList:
+  AtExpr                                { [$1]                   }
+| AtExpr ArgsList                       { $1 :: $2               }
 ;
 
 AppExpr:
-    AtExpr AppArgExpr                   { Call($1, $2)           }
-  | AppExpr AppArgExpr                  { Call($1, $2)           }
+  | AtExpr ArgsList                     { Call($1, $2)           }
 ;
+```
+
+And added following types
+
+```fsharp
+%type <string list> List
+%type <expr list> ArgsList
 ```
 
 ### Exercise 4.4
@@ -646,6 +652,19 @@ In FunPar.fsy the following tokens and Expr were added for AND & OR
 %token AND
 %token OR
 %token EOF
+```
+
+And added precendence for OR & AND
+
+```fsharp
+%left OR                /* lowest precedence  */
+%left AND
+%left ELSE             
+%left EQ NE 
+%left GT LT GE LE
+%left PLUS MINUS
+%left TIMES DIV MOD
+%nonassoc NOT           /* highest precedence  */
 ```
 
 ```fsharp
