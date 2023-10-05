@@ -832,6 +832,8 @@ When it was ran it evaluated to the following:
 
 ### Exercise 6.3
 
+
+
 ### Exercise 6.4
 
 ### Exercise 6.5
