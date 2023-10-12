@@ -940,11 +940,11 @@ run e6_2;;
 
 ### Exercise 6.4
 
-(!)
+(i)
 
 ![screenshot](./screenshots/a5_e6_4_1.png)
 
-(!!)
+(ii)
 
 ![screenshot](./screenshots/a5_e6_4_2.png)
 
@@ -1024,3 +1024,5 @@ TODO
 let a = inferType(fromString "let f = x in f end");;
 
 ```
+
+![screenshot](./screenshots/a5_e6_5.png)
