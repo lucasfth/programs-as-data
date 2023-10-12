@@ -1018,11 +1018,9 @@ let ab = inferType (fromString "let f x = let y = f x in y end in f end");;
 val ab : string = "('e -> 'f)"
 ```
 
-TODO
-
 ```fsharp
-let a = inferType(fromString "let f = x in f end");;
-
+let a = inferType(fromString "let f x = let y = f x in y end in f 1 end");;
+val a : string = "'f"
 ```
 
 ![screenshot](./screenshots/a5_e6_5.png)
