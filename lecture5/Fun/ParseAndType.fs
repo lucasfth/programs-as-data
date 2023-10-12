@@ -135,34 +135,3 @@ let id x = x in
 end
               "
     )
-
-let e6_5_0 = inferType (fromString "let f x = 1 in f f end")
-
-(* let e6_5_1 = inferType(fromString "let f g = g g in f end");;  Doesn't Work - error circularity. G missing type *)
-
-let e6_5_2 =
-    inferType (fromString "let f x = let g y = y in g false end in f 42 end")
-
-(* let e6_5_3 = inferType(fromString "let f x = let g y = if true then y else x in g false end in f 42 end");; Doesn't Work - error: bool and int. f returns both bool and int. *)
-
-let e6_5_4 =
-    inferType (fromString "let f x = let g y = if true then y else x in g false end in f true end")
-
-let boolToBool =
-    inferType (fromString "let f x = if x = true then true else false in f end")
-
-let intToInt = inferType (fromString "let f x = if x = 1 then 2 else 3 in f end")
-
-let intToIntToInt =
-    inferType (fromString "let f x = let g y = x + y in g end in f end")
-
-let aba = inferType (fromString "let f x = let z y = x in z end in f end")
-
-let abb = inferType (fromString "let f x = let z x = x in z end in f end")
-
-let abbcac =
-    inferType (fromString "let f x = let y z = let v w = z (x w) in v end in y end in f end")
-
-let ab = inferType (fromString "let f x = let y = f x in y end in f end")
-
-(*let a = inferType(fromString "let f ");; (* No idea ?? *)*)
