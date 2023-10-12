@@ -466,7 +466,7 @@ let _fsyacc_reductions ()  =    [|
                 (
                    (
 # 56 "FunPar.fsy"
-                                                               Fun(_2, _4)         
+                                                               Fun(_2, _4)            
                    )
 # 56 "FunPar.fsy"
                  : Absyn.expr));
