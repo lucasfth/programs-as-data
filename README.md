@@ -940,6 +940,73 @@ run e6_2;;
 
 ### Exercise 6.4
 
-
-
 ### Exercise 6.5
+
+### part one
+
+```fsharp
+let e6_5_0 = inferType (fromString "let f x = 1 in f f end");;
+val e6_5_0 : string = "int"
+```
+
+Issue is type error circularity. G is missing type.
+
+```fsharp
+let e6_5_1 = inferType(fromString "let f g = g g in f end");;
+System.Exception: type error: circularity
+```
+
+```fsharp
+let e6_5_2 = inferType (fromString "let f x = let g y = y in g false end in f 42 end");;
+val e6_5_2 : string = "bool"
+```
+
+issue is type error bool and int. F returns both boolean and integer.
+
+```fsharp
+let e6_5_3 = inferType(fromString "let f x = let g y = if true then y else x in g false end in f 42 end");;
+System.Exception: type error: bool and int
+```
+
+```fsharp
+let e6_5_4 = inferType (fromString "let f x = let g y = if true then y else x in g false end in f true end");;
+val e6_5_4 : string = "bool"
+```
+
+### part two
+
+```fsharp
+let boolToBool = inferType (fromString "let f x = if x = true then true else false in f end");;
+val boolToBool : string = "(bool -> bool)"
+```
+
+```fsharp
+let intToInt = inferType (fromString "let f x = if x = 1 then 2 else 3 in f end");;
+val intToInt : string = "(int -> int)"
+```
+
+```fsharp
+let intToIntToInt = inferType (fromString "let f x = let g y = x + y in g end in f end");;
+val intToIntToInt : string = "(int -> (int -> int))"
+```
+
+```fsharp
+let aba = inferType (fromString "let f x = let z y = x in z end in f end");;
+val aba : string = "('h -> ('g -> 'h))"
+```
+
+```fsharp
+let abb = inferType (fromString "let f x = let z x = x in z end in f end");;
+val abb : string = "('g -> ('h -> 'h))"
+```
+
+```fsharp
+let abbcac = inferType (fromString "let f x = let y z = let v w = z (x w) in v end in y end in f end")
+val abbcac : string = "(('l -> 'k) -> (('k -> 'm) -> ('l -> 'm)))"
+```
+
+TODO
+
+```fhsarp
+
+```
