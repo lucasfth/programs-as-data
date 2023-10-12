@@ -1001,12 +1001,18 @@ val abb : string = "('g -> ('h -> 'h))"
 ```
 
 ```fsharp
-let abbcac = inferType (fromString "let f x = let y z = let v w = z (x w) in v end in y end in f end")
+let abbcac = inferType (fromString "let f x = let y z = let v w = z (x w) in v end in y end in f end");;
 val abbcac : string = "(('l -> 'k) -> (('k -> 'm) -> ('l -> 'm)))"
+```
+
+```fsharp
+let ab = inferType (fromString "let f x = let y = f x in y end in f end");;
+val ab : string = "('e -> 'f)"
 ```
 
 TODO
 
-```fhsarp
+```fsharp
+let a = inferType(fromString "let f = x in f end");;
 
 ```
