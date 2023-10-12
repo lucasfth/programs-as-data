@@ -31,6 +31,7 @@ fefa and luha
   * [Exercise 5.7](#exercise-57)
   * [Exercise 6.1](#exercise-61)
   * [Exercise 6.2](#exercise-62)
+  * [Exercise 6.3](#exercise-63)
   * [Exercise 6.4](#exercise-64)
   * [Exercise 6.5](#exercise-65)
 <!--te-->
