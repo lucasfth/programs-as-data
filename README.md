@@ -940,6 +940,14 @@ run e6_2;;
 
 ### Exercise 6.4
 
+(!)
+
+![screenshot](./screenshots/a5_e6_4_1.png)
+
+(!!)
+
+![screenshot](./screenshots/a5_e6_4_2.png)
+
 ### Exercise 6.5
 
 #### part one
