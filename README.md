@@ -942,7 +942,7 @@ run e6_2;;
 
 ### Exercise 6.5
 
-### part one
+#### part one
 
 ```fsharp
 let e6_5_0 = inferType (fromString "let f x = 1 in f f end");;
@@ -973,7 +973,7 @@ let e6_5_4 = inferType (fromString "let f x = let g y = if true then y else x in
 val e6_5_4 : string = "bool"
 ```
 
-### part two
+#### part two
 
 ```fsharp
 let boolToBool = inferType (fromString "let f x = if x = true then true else false in f end");;
