@@ -1034,6 +1034,10 @@ val a : string = "'f"
 
 ### Exercise 7.1
 
+![screenshot](./screenshots/a6_e7_1_1.png)
+
+![screenshot](./screenshots/a6_e7_1_2.png)
+
 ### Exercise 7.2
 
 ### Exercise 7.3
