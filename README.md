@@ -6,7 +6,6 @@ fefa and luha
 
 ## Table of contents
 
-<!--ts-->
 * [Assignment 1](#assignment-1)
 * [Assignment 2](#assignment-2)
   * [Exercise 2.4 from PLC](#exercise-24-from-plc)
@@ -34,7 +33,12 @@ fefa and luha
   * [Exercise 6.3](#exercise-63)
   * [Exercise 6.4](#exercise-64)
   * [Exercise 6.5](#exercise-65)
-<!--te-->
+* [Assignment 6](#assignment-6)
+  * [Exercise 7.1](#exercise-71)
+  * [Exercise 7.2](#exercise-72)
+  * [Exercise 7.3](#exercise-73)
+  * [Exercise 7.4](#exercise-74)
+  * [Exercise 7.5](#exercise-75)
 
 ## Assignment 1
 
@@ -1025,3 +1029,15 @@ val a : string = "'f"
 ```
 
 ![screenshot](./screenshots/a5_e6_5.png)
+
+## Assignment 6
+
+### Exercise 7.1
+
+### Exercise 7.2
+
+### Exercise 7.3
+
+### Exercise 7.4
+
+### Exercise 7.5
