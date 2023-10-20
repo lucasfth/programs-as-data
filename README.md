@@ -1040,6 +1040,42 @@ val a : string = "'f"
 
 ### Exercise 7.2
 
+#### Part 1
+
+The following code is a solution for `arrsum.c`:
+
+```c
+void main(int n) {
+    int arr[4];
+    arr[0] = 7;
+    arr[1] = 3;
+    arr[2] = 9;
+    arr[3] = 8;
+
+    int sum;
+    sum = 0;
+
+    arrsum(n, arr, &sum);
+
+    print sum;
+    println;
+}
+
+void arrsum (int n, int arr[], int *sump) {
+    int i;
+    i = 0;
+
+    while (i < n) {
+        *sump = *sump + arr[i];
+        i = i + 1;
+    }
+}
+```
+
+#### Part 2
+
+
+
 ### Exercise 7.3
 
 ### Exercise 7.4
