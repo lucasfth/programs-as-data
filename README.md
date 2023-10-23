@@ -1036,6 +1036,38 @@ val a : string = "'f"
 
 ![screenshot](./screenshots/a6_e7_1_1.png)
 
+#### Indication of `ex1.c` abstract syntax parts
+
+The tree can be seen here:
+
+```c
+val it : Absyn.program =
+  Prog
+    [Fundec
+       (None, "main", [(TypI, "n")],
+        Block
+          [Stmt
+             (While
+                (Prim2 (">", Access (AccVar "n"), CstI 0),
+                 Block
+                   [Stmt (Expr (Prim1 ("printi", Access (AccVar "n"))));
+                    Stmt
+                      (Expr
+                         (Assign
+                            (AccVar "n",
+                             Prim2 ("-", Access (AccVar "n"), CstI 1))))]));
+           Stmt (Expr (Prim1 ("printc", CstI 10)))])]
+```
+
+Below the parts which exists in the tree have been indicated:
+
+| | Present Parts |
+| --- | --- |
+| Declarations | `Fundec` |
+| Statements | `While`, `Block`, `Expr` |
+| Types | `TypI` |
+| Expressions | `Access`, `Assign`, `CstI`, `Prim1`, `Prim2` |
+
 ![screenshot](./screenshots/a6_e7_1_2.png)
 
 ### Exercise 7.2
