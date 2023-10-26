@@ -1077,36 +1077,141 @@ Below the parts which exists in the tree have been indicated:
 The following code is a solution for `arrsum.c`:
 
 ```c
-void main(int n) {
+int *sump;
+
+void main(int n)
+{
     int arr[4];
     arr[0] = 7;
-    arr[1] = 3;
+    arr[1] = 13;
     arr[2] = 9;
     arr[3] = 8;
 
     int sum;
     sum = 0;
 
-    arrsum(n, arr, &sum);
+    arrsum(n, arr, sump);
 
-    print sum;
-    println;
+    print *sump;
 }
 
-void arrsum (int n, int arr[], int *sump) {
+void arrsum(int n, int arr[], int *sump)
+{
     int i;
     i = 0;
+    int sum;
+    sum = 0;
 
-    while (i < n) {
-        *sump = *sump + arr[i];
-        i = i + 1;
+    if (n <= 4)
+    {
+        while (i < n)
+        {
+            sum = sum + arr[i];
+            i = i + 1;
+        }
     }
+
+    *sump = sum;
 }
 ```
 
 #### Part 2
 
+The following code is a solution for `squares.c`:
 
+```c
+
+int *sump;
+
+void main(int n)
+{
+    int arr[20];
+
+    squares(n, arr);
+
+    arrsum(n, arr, sump);
+
+    print *sump;
+}
+
+void squares(int n, int arr[])
+{
+    int i;
+    i = 0;
+    if (n <= 20)
+    {
+        while (i < n)
+        {
+            arr[i] = i * i;
+            i = i + 1;
+        }
+    }
+}
+
+void arrsum(int n, int arr[], int *sump)
+{
+    int i;
+    i = 0;
+    int sum;
+    sum = 0;
+    while (i < n)
+    {
+        sum = sum + arr[i];
+        i = i + 1;
+    }
+    *sump = sum;
+}
+```
+
+#### Part 3
+
+The following code is a solution for `histogram.c`:
+
+```c
+
+void main(int n)
+{
+    int arr[7];
+    arr[0] = 1;
+    arr[1] = 2;
+    arr[2] = 1;
+    arr[3] = 1;
+    arr[4] = 1;
+    arr[5] = 2;
+    arr[6] = 0;
+
+    int max;
+    max = 3;
+
+    int freq[4];
+    freq[0] = 0;
+    freq[1] = 0;
+    freq[2] = 0;
+    freq[3] = 0;
+
+    histogram(n, arr, max, freq);
+
+    int i;
+    i = 0;
+    while (i < 4)
+    {
+        print freq[i];
+        i = i + 1;
+    }
+}
+
+void histogram(int n, int ns[], int max, int freq[])
+{
+    int i;
+    i = 0;
+
+    while (i < n)
+    {
+        freq[ns[i]] = freq[ns[i]] + 1;
+        i = i + 1;
+    }
+}
+```
 
 ### Exercise 7.3
 
