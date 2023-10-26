@@ -1384,4 +1384,56 @@ void histogram(int n, int ns[], int max, int freq[])
 
 ### Exercise 7.4
 
+In `Absyn.fs` we added `PreInc` and `PreDec` to `expr`:
+
+```fsharp
+and expr =                                                         
+  | Access of access                 (* x    or  *p    or  a[e]     *)
+  | Assign of access * expr          (* x=e  or  *p=e  or  a[e]=e   *)
+  | Addr of access                   (* &x   or  &*p   or  &a[e]    *)
+  | CstI of int                      (* Constant                    *)
+  | Prim1 of string * expr           (* Unary primitive operator    *)
+  | Prim2 of string * expr * expr    (* Binary primitive operator   *)
+  | Andalso of expr * expr           (* Sequential and              *)
+  | Orelse of expr * expr            (* Sequential or               *)
+  | Call of string * expr list       (* Function call f(...)        *)
+  | PreInc of access                 (* C/C++/Java/C# ++i or ++a[e] *)
+  | PreDec of access                 (* C/C++/Java/C# --i or --a[e] *)
+```
+
+In `Interp.fs` we added `PreInc` and `PreDec` to `eval`:
+
+```fsharp
+| PreInc acc -> 
+  let (loc, store1) = access acc locEnv gloEnv store
+  let curVal = getSto store1 loc
+  let updVal = curVal + 1
+  (updVal, setSto store1 loc updVal)
+| PreDec acc -> 
+  let (loc, store1) = access acc locEnv gloEnv store
+  let curVal = getSto store1 loc
+  let updVal = curVal - 1
+  (updVal, setSto store1 loc updVal)
+```
+
 ### Exercise 7.5
+
+In `CLex.fsl` we added `--` and `++` to `rule Token = parse`:
+
+```fsharp
+| "++"            { INC }
+| "--"            { DEC } 
+```
+
+In `CPar.fsy` we added `PreInc` and `PreDec` to `ExprNotAcces`:
+
+```fsharp
+| INC Access                          { PreInc($2)          }
+| DEC Access                          { PreDec($2)          }
+```
+
+and added the following token:
+
+```fsharp
+%token LPAR RPAR LBRACE RBRACE LBRACK RBRACK SEMI COMMA ASSIGN AMP INC DEC
+```
