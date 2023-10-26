@@ -1,9 +1,9 @@
 // micro-C example 1
 
 void main(int n) {
-  while (n > 0) {
-    print n;
-    n = n - 1;
+  int i;
+  for(i = n; i >= 0; i = i - 1) {
+    print i;
   }
   println;
 }

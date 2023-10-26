@@ -1215,6 +1215,173 @@ void histogram(int n, int ns[], int max, int freq[])
 
 ### Exercise 7.3
 
+In `CPar.fsy` we added the `FOR` in `StmtM` and `StmtU`:
+
+```fsy
+StmtM:  /* No unbalanced if-else */
+    Expr SEMI                           { Expr($1)             }
+  | RETURN SEMI                         { Return None          }
+  | RETURN Expr SEMI                    { Return(Some($2))     }
+  | Block                               { $1                   }
+  | IF LPAR Expr RPAR StmtM ELSE StmtM  { If($3, $5, $7)       }
+  | WHILE LPAR Expr RPAR StmtM          { While($3, $5)        }
+  | FOR LPAR Expr SEMI Expr SEMI Expr RPAR StmtM { Block[Stmt(Expr($3)); Stmt(While($5, Block[Stmt($9); Stmt(Expr($7))]))] }
+;
+
+StmtU:
+    IF LPAR Expr RPAR StmtM ELSE StmtU  { If($3, $5, $7)       }
+  | IF LPAR Expr RPAR Stmt              { If($3, $5, Block []) }
+  | WHILE LPAR Expr RPAR StmtU          { While($3, $5)        }
+  | FOR LPAR Expr SEMI Expr SEMI Expr RPAR StmtU { Block[Stmt(Expr($3)); Stmt(While($5, Block[Stmt($9); Stmt(Expr($7))]))] }
+;
+```
+
+In `CLex.fsl` we added the keyword `for`:
+
+```fsl
+let keyword s =
+    match s with
+    | "char"    -> CHAR 
+    | "else"    -> ELSE
+    | "false"   -> CSTBOOL 0
+    | "if"      -> IF
+    | "int"     -> INT
+    | "null"    -> NULL
+    | "print"   -> PRINT
+    | "println" -> PRINTLN
+    | "return"  -> RETURN
+    | "true"    -> CSTBOOL 1
+    | "void"    -> VOID 
+    | "while"   -> WHILE  
+    | "for"     -> FOR       
+    | _         -> NAME s
+```
+
+Updated `arrsum.c`:
+
+```c
+int *sump;
+
+void main(int n)
+{
+    int arr[4];
+    arr[0] = 7;
+    arr[1] = 13;
+    arr[2] = 9;
+    arr[3] = 8;
+
+    int sum;
+    sum = 0;
+
+    arrsum(n, arr, sump);
+
+    print *sump;
+}
+
+void arrsum(int n, int arr[], int *sump)
+{
+    int i;
+    int sum;
+    sum = 0;
+
+    if (n <= 4)
+    {
+        for (i = 0; i < n; i = i + 1)
+        {
+            sum = sum + arr[i];
+        }
+    }
+
+    *sump = sum;
+}
+```
+
+Updated `squares.c`:
+
+```c
+int *sump;
+
+void main(int n)
+{
+    int arr[20];
+
+    squares(n, arr);
+
+    arrsum(n, arr, sump);
+
+    print *sump;
+}
+
+void squares(int n, int arr[])
+{
+    int i;
+    if (n <= 20)
+    {
+        for(i = 0; i < n; i = i +1){
+            arr[i] = i * i;
+        }
+    }
+}
+
+void arrsum(int n, int arr[], int *sump)
+{
+    int i;
+    int sum;
+    sum = 0;
+    
+    for(i = 0; i < n; i = i+1){
+        sum = sum + arr[i];
+    }
+
+    *sump = sum;
+}
+```
+
+Updated `histogram.c`:
+
+```c
+
+void main(int n)
+{
+    int arr[7];
+    arr[0] = 1;
+    arr[1] = 2;
+    arr[2] = 1;
+    arr[3] = 1;
+    arr[4] = 1;
+    arr[5] = 2;
+    arr[6] = 0;
+
+    int max;
+    max = 3;
+
+    int freq[4];
+    freq[0] = 0;
+    freq[1] = 0;
+    freq[2] = 0;
+    freq[3] = 0;
+
+    histogram(n, arr, max, freq);
+
+    int i;
+
+    for(i = 0; i < 4; i = i + 1)
+    {
+        print freq[i];
+    }
+}
+
+void histogram(int n, int ns[], int max, int freq[])
+{
+    int i;
+
+    for (i = 0; i < n; i = i + 1)
+    {
+        freq[ns[i]] = freq[ns[i]] + 1;
+    }
+}
+```
+
 ### Exercise 7.4
 
 ### Exercise 7.5

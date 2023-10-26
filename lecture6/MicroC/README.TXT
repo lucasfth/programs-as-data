@@ -7,8 +7,8 @@ Archive microc.zip contains the files used in points A, B and C below.
 A. Generating and compiling the lexer and parser for micro-C, and
    loading the interpreter for micro-C.
 
-   fslex --unicode CLex.fsl
-   fsyacc --module CPar CPar.fsy
+   ~/bin/fsharp/fslex --unicode CLex.fsl
+   ~/bin/fsharp/fsyacc --module CPar CPar.fsy
    fsharpi -r ~/bin/fsharp/FsLexYacc.Runtime.dll Absyn.fs CPar.fs CLex.fs Parse.fs Interp.fs ParseAndRun.fs
 
    open ParseAndRun;;

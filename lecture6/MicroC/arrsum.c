@@ -15,7 +15,8 @@ void main(int n)
 
     print *sump;
 }
-
+/*
+While Loop version
 void arrsum(int n, int arr[], int *sump)
 {
     int i;
@@ -29,6 +30,25 @@ void arrsum(int n, int arr[], int *sump)
         {
             sum = sum + arr[i];
             i = i + 1;
+        }
+    }
+
+    *sump = sum;
+}
+*/
+
+//For loop version
+void arrsum(int n, int arr[], int *sump)
+{
+    int i;
+    int sum;
+    sum = 0;
+
+    if (n <= 4)
+    {
+        for (i = 0; i < n; i = i + 1)
+        {
+            sum = sum + arr[i];
         }
     }
 
