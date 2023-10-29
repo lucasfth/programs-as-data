@@ -39,6 +39,12 @@ fefa and luha
   * [Exercise 7.3](#exercise-73)
   * [Exercise 7.4](#exercise-74)
   * [Exercise 7.5](#exercise-75)
+* [Assignment 7](#assignment-7)
+  * [Exercise 8.1](#exercise-81)
+  * [Exercise 8.3](#exercise-83)
+  * [Exercise 8.4](#exercise-84)
+  * [Exercise 8.5](#exercise-85)
+  * [Exercise 8.6](#exercise-86)
 
 ## Assignment 1
 
@@ -1437,3 +1443,15 @@ and added the following token:
 ```fsharp
 %token LPAR RPAR LBRACE RBRACE LBRACK RBRACK SEMI COMMA ASSIGN AMP INC DEC
 ```
+
+## Assignment 7
+
+### Exercise 8.1
+
+### Exercise 8.3
+
+### Exercise 8.4
+
+### Exercise 8.5
+
+### Exercise 8.6
