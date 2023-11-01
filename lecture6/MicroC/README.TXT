@@ -22,11 +22,15 @@ B. To compile and use the micro-C compiler
 
    ~/bin/fsharp/fslex --unicode CLex.fsl
    ~/bin/fsharp/fsyacc --module CPar CPar.fsy
-   fsharpi -r ~/bin/fsharp/FsLexYacc.Runtime.dll Absyn.fs CPar.fs CLex.fs Parse.fs Machine.fs Comp.fs ParseAndComp.fs   
+   fsharpi -r ~/bin/fsharp/FsLexYacc.Runtime.dll Absyn.fs CPar.fs CLex.fs Parse.fs Machine.fs Comp.fs ParseAndComp.fs
 
    open ParseAndComp;;
    compileToFile (fromFile "ex11.c") "ex11.out";;
    compile "ex11";;
+   compileToFile (fromFile "ex3.c") "ex3.out";;
+   compile "ex3";;
+   compileToFile (fromFile "ex5.c") "ex5.out";;
+   compile "ex5";;
    #q;;
 
 The Java stack machine:

@@ -1454,7 +1454,13 @@ and added the following token:
 
 #### Part 2
 
+![screenshot](./screenshots/a7_e8_1_2.png)
+
+Og så skal vi analysere det men fatter ikke lige hvordan... og skrive micro-C kode for det.
+
 ### Exercise 8.3
+
+
 
 ### Exercise 8.4
 
