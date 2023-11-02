@@ -154,14 +154,14 @@ let rec cStmt stmt (varEnv : varEnv) (funEnv : funEnv) : instr list =
           cExpr e varEnv funEnv @ [CSTI i; EQ; IFZERO labnext]
           @ cStmt stmt varEnv funEnv @ [GOTO labend; Label labnext]
           @ loop rest
-        | _ -> failwith "illegal"
+          @ [Label labend]
       loop lst
 
 and cStmtOrDec stmtOrDec (varEnv : varEnv) (funEnv : funEnv) : varEnv * instr list = 
     match stmtOrDec with 
     | Stmt stmt    -> (varEnv, cStmt stmt varEnv funEnv) 
     | Dec (typ, x) -> allocate Locvar (typ, x) varEnv
-    | Case (_, stmtOrDec) -> (varEnv, cStmt stmtOrDec varEnv funEnv)
+    | Case (_, stmt) -> (varEnv, cStmt stmt varEnv funEnv)
 
 (* Compiling micro-C expressions: 
 
