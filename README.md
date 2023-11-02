@@ -1491,6 +1491,75 @@ Ran 0.032 seconds
 
 ### Exercise 8.4
 
+#### part 1
+
+The difference from the two files are as follows:
+
+First we can 'compile' them to structured bytecode to get an overview.
+
+```fsharp
+24 LDARGS
+19 CALL 0 5
+25 STOP
+15 INCSP 1
+13 GETBP
+0 CSTI 0
+1 ADD
+0 CSTI 2000000
+12 STI
+15 INCSP -1
+16 GOTO 35
+13 GETBP
+0 CSTI 0
+1 ADD 
+13 GETBP
+0 CSTI 0
+1 ADD 
+11 LDI 
+0 CSTI 1
+2 SUB
+12 STI 
+15 INCSP -1
+15 INCSP 0
+13 GETBP 
+0 CSTI 0
+1 ADD
+11 LDI 
+18 IFNZRO 18 
+15 INCSP -1 
+21 RET -1
+```
+
+vs
+
+```fsharp
+0  CSTI 2000000
+16 GOTO 7
+0  CSTI 1
+2  SUB
+9  DUP 
+18 IFNZRO 4
+25 STOP
+```
+
+Prog1 is shorter and does not need to load main/command line args.
+Prog1 does not initialise i and store 2000000 in i. 
+Prog1 uses dup to handle the "i = i - 1;" line in ex8.c
+
+### part 2
+
+**loops** works as follows:
+
+checks if condition in loop is true, then returns to start of the loop
+
+The **if** condition evaluates the expression inside and if the result = true then it runs the code inside
+
+Both **||** and **&&** evaluates the first expression.
+
+For **&&**, if the first expression evaluates to false, the if statements that it is part of is never run. The second expression will then not be evaluated. It can be seen here:
+
+for **||** if the first expression is true it will run the if statement and the second expressions will not be evaluated.
+
 ### Exercise 8.5
 
 ### Exercise 8.6
