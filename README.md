@@ -1460,7 +1460,34 @@ Og så skal vi analysere det men fatter ikke lige hvordan... og skrive micro-C k
 
 ### Exercise 8.3
 
+The program written to check that the implementation works, is ex8_3.c - the output should be the integers from 1-n
 
+```fsharp
+void main(int n)
+{
+    int i;
+    i = 0;
+    while (i < n)
+    {
+        ++i;
+        print i;
+    }
+}
+```
+
+The program is then compiled by running
+
+```fsharp
+compileToFile (fromFile "ex8_3.c") "ex8_3.out";;
+```
+
+And then the result is checked by running the following command with an integer as input
+
+```fsharp
+java Machine ex8_3.out 8
+1 2 3 4 5 6 7 8
+Ran 0.032 seconds
+```
 
 ### Exercise 8.4
 

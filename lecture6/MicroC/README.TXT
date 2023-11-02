@@ -25,18 +25,13 @@ B. To compile and use the micro-C compiler
    fsharpi -r ~/bin/fsharp/FsLexYacc.Runtime.dll Absyn.fs CPar.fs CLex.fs Parse.fs Machine.fs Comp.fs ParseAndComp.fs
 
    open ParseAndComp;;
-   compileToFile (fromFile "ex11.c") "ex11.out";;
-   compile "ex11";;
-   compileToFile (fromFile "ex3.c") "ex3.out";;
-   compile "ex3";;
-   compileToFile (fromFile "ex5.c") "ex5.out";;
-   compile "ex5";;
+   compileToFile (fromFile "ex8_3.c") "ex8_3.out";;
    #q;;
 
 The Java stack machine:
 
    javac Machine.java
-   java Machine ex11.out 8
+   java Machine ex8_3.out 8
 
 The C stack machine
    gcc machine.c
