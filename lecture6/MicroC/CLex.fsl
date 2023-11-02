@@ -77,8 +77,8 @@ rule Token = parse
   | ','             { COMMA }
   | "++"            { INC }
   | "--"            { DEC }
-  | '?'             { Q }
-  | ':'             { C }
+  | "?"             { Q }
+  | ":"             { C }
   | "//"            { EndLineComment lexbuf; Token lexbuf }
   | "/*"            { Comment lexbuf; Token lexbuf }
   | '"'             { CSTSTRING (String [] lexbuf) }

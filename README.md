@@ -1458,7 +1458,159 @@ and added the following token:
 
 Og så skal vi analysere det men fatter ikke lige hvordan... og skrive micro-C kode for det.
 
+| fun | desc | arg1 | arg2 | microC |
+| --- | --- | --- | --- | --- |
+| ex3 | | | | |
+| LDARS | load arguments | | | |
+| CALL | move integer to label | 1 | L1 | 19  1 "L1" |
+| STOP | halt abstract machine | | | 25 |
+| INCSP | increase stack top by int | 1 | | 15 1 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 1 | | 0 1 |
+| ADD | addition | | | 1 |
+| CSTI | push integer constant | 0 | | 0 0 |
+| STI | store inderect | | | 12 |
+| INCSP | increase stack top by int | -1 | | 15 -1 |
+| GOTO | jump to label | "L3" | | 16 "L3" |
+| Label | pseudo instruction | "L2" | | Label "L2" |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 1 | | 0 1 |
+| ADD | addition | | | 1 |
+| LDI | load inderect | | | 11 |
+| PRINTI | print integer | | | 22 |
+| INCSP | increase stack top by int | -1 | | 15 -1 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 1 | | 0 1 |
+| ADD | addition | | | 1 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 1 | | 0 1 |
+| ADD | addition | | | 1 |
+| STI | store inderect | | | 12 |
+| INCSP | increase stack top by int | -1 | | 15 -1 |
+| INCSP | increase stack top by int | 0 | | 15 0 |
+| Label | pseudo instruction | "L3" | | Label "L3" |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 1 | | 0 1 |
+| ADD | addition | | | 1 |
+| LDI | load inderect | | | 11 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 0 | | 0 0 |
+| ADD | addition | | | 1 |
+| LDI | load inderect | | | 11 |
+| LT | less than | | | 7 |
+| IFNZRO | jump to label if not zero | "L2" | | 18 "L2" |
+| INCSP | increase stack top by int | -1 | | 15 -1 |
+| RET | return from function | 0 | | 21 0 |
+| ex5 | | | | |
+| LDARGS | load arguments | | | |
+| CALL | move integer to label | 1 | "L1" | 19  1 "L1" |
+| STOP | halt abstract machine | | | 25 |
+| Label | pseudo instruction | "L1" | | Label "L1" |
+| INCSP | increase stack top by int | 1 | | 15 1 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 1 | | 0 1 |
+| ADD | addition | | | 1 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 0 | | 0 0 |
+| ADD | addition | | | 1 |
+| LDI | load inderect | | | 11 |
+| INCSP | increase stack top by int | -1 | | 15 -1 |
+| INCSP | increase stack top by int | 1 | | 15 1 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 0 | | 0 0 |
+| ADD | addition | | | 1 |
+| LDI | load inderect | | | 11 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 2 | | 0 2 |
+| ADD | addition | | | 1 |
+| CALL | move integer to label | 2 | "L2" | 19  2 "L2" |
+| INCSP | increase stack top by int | -1 | | 15 -1 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 2 | | 0 2 |
+| ADD | addition | | | 1 |
+| LDI | load inderect | | | 11 |
+| PRINTI | print integer | | | 22 |
+| INCSP | increase stack top by int | -1 | | 15 -1 |
+| INCSP | increase stack top by int | -1 | | 15 -1 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 1 | | 0 1 |
+| ADD | addition | | | 1 |
+| LDI | load inderect | | | 11 |
+| PRINTI | print integer | | | 22 |
+| INCSP | increase stack top by int | -1 | | 15 -1 |
+| INCSP | increase stack top by int | -1 | | 15 -1 |
+| RET | return from function | 0 | | 21 0 |
+| Label | pseudo instruction | "L2" | | Label "L2" |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 1 | | 0 1 |
+| ADD | addition | | | 1 |
+| LDI | load inderect | | | 11 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 0 | | 0 0 |
+| ADD | addition | | | 1 |
+| LDI | load inderect | | | 11 |
+| GETBP | get base pointer | | | 13 |
+| CSTI | push integer constant | 0 | | 0 0 |
+| ADD | addition | | | 1 |
+| LDI | load inderect | | | 11 |
+| MUL | multiplication | | | 3 |
+| STI | store inderect | | | 12 |
+| INCSP | increase stack top by int | -1 | | 15 -1 |
+| INCSP | increase stack top by int | 0 | | 15 0 |
+| RET | return from function | 1 | | 21 1 |
+
+#### part 3
+
+![screenshot](./screenshots/a7_e8_1_2_1.png)
+
+![screenshot](./screenshots/a7_e8_1_2_2.png)
+
+Get ready to load arguments:\
+`[ ]{0: LDARGS}`
+
+Readies a return address and an base pointer:\
+`[ 4 ]{1: CALL 1 5}`
+
+Allocate space for int i variable:\
+`[ 4 -999 4 ]{5: INCSP 1}`
+
+Get base pointer:\
+`[ 4 -999 4 0 ]{7: GETBP}`
+
+Push 1 to stack:\
+`[ 4 -999 4 0 2 ]{8: CSTI 1}`
+
+Add takes 1 and adds it to `i`:\
+`[ 4 -999 4 0 2 1 ]{10: ADD}`
+
+int 0:\
+`[ 4 -999 4 0 3 ]{11: CSTI 0}`
+
+Store it in `i`:\
+`[ 4 -999 4 0 3 0 ]{13: STI}`
+
+Decrement stack pointer:\
+`[ 4 -999 4 0 0 ]{14: INCSP -1}`
+
+Get base pointer to 43 and go to it:\
+`[ 4 -999 4 0 ]{16: GOTO 43}`
+
+Now we are starting the while loop.
+
+Get base pointer to self:\
+`[ 4 -999 4 0 ]{43: GETBP}`
+
+Do some loop stuff checking.
+
+Compare `i` to `n`:\
+`[ 4 -999 4 0 0 4 ]{53: LT}`
+
+If not zero then go 18 (aka proceed with the loop) else finish:\
+`[ 4 -999 4 2 1 ]{54: IFNZRO 18}`
+
 ### Exercise 8.3
+
+Files modified: 'Comp.fs', 'CLex.fsl' and 'Cpar.fsy'
 
 The program written to check that the implementation works, is ex8_3.c - the output should be the integers from 1-n
 
@@ -1493,12 +1645,12 @@ Ran 0.032 seconds
 
 #### part 1
 
-The difference from the two files are as follows:
+The difference between the two files are as follows:
 
 First we can 'compile' them to structured bytecode to get an overview.
 
 ```fsharp
-24 LDARGS
+24 LDARGS 
 19 CALL 0 5
 25 STOP
 15 INCSP 1
@@ -1543,7 +1695,7 @@ vs
 ```
 
 Prog1 is shorter and does not need to load main/command line args.
-Prog1 does not initialise i and store 2000000 in i. 
+Prog1 does not initialise i and store 2000000 in i.
 Prog1 uses dup to handle the "i = i - 1;" line in ex8.c
 
 ### part 2
@@ -1562,4 +1714,19 @@ for **||** if the first expression is true it will run the if statement and the 
 
 ### Exercise 8.5
 
+Files modified 'Absyn.fs', 'CLex.fsl, 'CPar.fsy'
+
+The program printGreaterNumber.c and its corresponding printGreaterNumber.out files are for checking that it works.
+
+```c
+void main(int n, int m)
+{
+    (n > m) ? print n : print m;
+}
+```
+
+The program will print the highest number from args.
+
 ### Exercise 8.6
+
+
