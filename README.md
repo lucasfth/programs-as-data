@@ -1729,4 +1729,80 @@ The program will print the highest number from args.
 
 ### Exercise 8.6
 
+We have made most of the changes to nearly complete it.
+Though we can not compile it yet.
 
+Files modified 'Absyn.fs', 'CLex.fsl, 'CPar.fsy'.
+
+In `Absyn.fs` we added the the switch:
+
+```fsharp
+and stmt =                                                         
+  | If of expr * stmt * stmt         (* Conditional                 *)
+  | While of expr * stmt             (* While loop                  *)
+  | Expr of expr                     (* Expression statement   e;   *)
+  | Return of expr option            (* Return from method          *)
+  | Block of stmtordec list          (* Block: grouping and scope   *)
+  | Switch of expr * stmtordec list
+```
+
+and we added case:
+
+```fsharp
+and stmtordec =                                                    
+  | Dec of typ * string              (* Local variable declaration  *)
+  | Stmt of stmt                     (* A statement                 *)
+  | Case of int * stmt
+```
+
+In CPar.fsy we added case:
+
+```fsharp
+StmtOrDecSeq:
+    /* empty */                         { [] }
+  | Stmt StmtOrDecSeq                   { Stmt $1 :: $2 }
+  | Vardec SEMI StmtOrDecSeq            { Dec (fst $1, snd $1) :: $3 }
+  | CASE CSTINT C Block StmtOrDecSeq    { Case($2, $4) :: ($5)       }
+;
+```
+
+and we added switch:
+
+```fsharp
+StmtM:  /* No unbalanced if-else */
+    Expr SEMI                           { Expr($1)             }
+  | RETURN SEMI                         { Return None          }
+  | RETURN Expr SEMI                    { Return(Some($2))     }
+  | Block                               { $1                   }
+  | IF LPAR Expr RPAR StmtM ELSE StmtM  { If($3, $5, $7)       }
+  | WHILE LPAR Expr RPAR StmtM          { While($3, $5)        }
+  | SWITCH LPAR Expr RPAR LBRACE StmtOrDecSeq RBRACE { Switch($3, $6)  }
+  | FOR LPAR Expr SEMI Expr SEMI Expr RPAR StmtM { Block[Stmt(Expr($3)); Stmt(While($5, Block[Stmt($9); Stmt(Expr($7))]))] }
+;
+```
+
+and the token `%token SWITCH CASE`
+
+
+In CLex.fsl we added case and switch:
+
+```fsharp
+let keyword s =
+    match s with
+    | "char"    -> CHAR 
+    | "else"    -> ELSE
+    | "false"   -> CSTBOOL 0
+    | "if"      -> IF
+    | "int"     -> INT
+    | "null"    -> NULL
+    | "print"   -> PRINT
+    | "println" -> PRINTLN
+    | "return"  -> RETURN
+    | "true"    -> CSTBOOL 1
+    | "void"    -> VOID 
+    | "while"   -> WHILE  
+    | "for"     -> FOR
+    | "switch"  -> SWITCH  
+    | "case"    -> CASE     
+    | _         -> NAME s
+```

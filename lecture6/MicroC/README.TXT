@@ -26,6 +26,7 @@ B. To compile and use the micro-C compiler
 
    open ParseAndComp;;
    compileToFile (fromFile "ex8_3.c") "ex8_3.out";;
+   compileToFile (fromFile "switch.c") "switch.out";;
    compileToFile (fromFile "printGreaterNumber.c") "printGreaterNumber.out";;
    #q;;
 

@@ -144,11 +144,24 @@ let rec cStmt stmt (varEnv : varEnv) (funEnv : funEnv) : instr list =
       [RET (snd varEnv - 1)]
     | Return (Some e) -> 
       cExpr e varEnv funEnv @ [RET (snd varEnv)]
+    | Switch (e, lst) ->
+      let labend = newLabel()
+      let rec loop lst =
+        match lst with
+        | [] -> [GOTO labend]
+        | (i, stmt)::rest ->
+          let labnext = newLabel()
+          cExpr e varEnv funEnv @ [CSTI i; EQ; IFZERO labnext]
+          @ cStmt stmt varEnv funEnv @ [GOTO labend; Label labnext]
+          @ loop rest
+        | _ -> failwith "illegal"
+      loop lst
 
 and cStmtOrDec stmtOrDec (varEnv : varEnv) (funEnv : funEnv) : varEnv * instr list = 
     match stmtOrDec with 
     | Stmt stmt    -> (varEnv, cStmt stmt varEnv funEnv) 
     | Dec (typ, x) -> allocate Locvar (typ, x) varEnv
+    | Case (_, stmtOrDec) -> (varEnv, cStmt stmtOrDec varEnv funEnv)
 
 (* Compiling micro-C expressions: 
 
@@ -216,7 +229,7 @@ and cExpr (e : expr) (varEnv : varEnv) (funEnv : funEnv) : instr list =
       cExpr e1 varEnv funEnv @ [IFZERO labelse] 
       @ cExpr e2 varEnv funEnv @ [GOTO labend]
       @ [Label labelse] @ cExpr e3 varEnv funEnv
-      @ [Label labend]  
+      @ [Label labend]
 
 (* Generate code to access variable, dereference pointer or index array.
    The effect of the compiled code is to leave an lvalue on the stack.   *)
