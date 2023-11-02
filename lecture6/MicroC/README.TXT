@@ -26,12 +26,14 @@ B. To compile and use the micro-C compiler
 
    open ParseAndComp;;
    compileToFile (fromFile "ex8_3.c") "ex8_3.out";;
+   compileToFile (fromFile "ex8_5.c") "ex8_5.out";;
    #q;;
 
 The Java stack machine:
 
    javac Machine.java
    java Machine ex8_3.out 8
+   java Machine ex8_5.out 8 10
 
 The C stack machine
    gcc machine.c

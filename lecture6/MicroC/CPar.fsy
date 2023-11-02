@@ -17,6 +17,7 @@ let nl = CstI 10
 %token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE FOR
 %token PLUS MINUS TIMES DIV MOD
 %token EQ NE GT LT GE LE
+%token Q C
 %token NOT SEQOR SEQAND
 %token LPAR RPAR LBRACE RBRACE LBRACK RBRACK SEMI COMMA ASSIGN AMP INC DEC
 %token EOF
@@ -28,7 +29,8 @@ let nl = CstI 10
 %left EQ NE 
 %left GT LT GE LE
 %left PLUS MINUS
-%left TIMES DIV MOD 
+%left TIMES DIV MOD
+%right Q C 
 %nonassoc NOT AMP 
 %nonassoc LBRACK          /* highest precedence  */
 
@@ -137,6 +139,7 @@ ExprNotAccess:
   | Expr SEQOR  Expr                    { Orelse($1, $3)      }
   | INC Access                          { PreInc($2)          }
   | DEC Access                          { PreDec($2)          }
+  | Expr Q Expr C Expr                  { Ternary($1, $3, $5) }
 ;
 
 AtExprNotAccess:
