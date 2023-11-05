@@ -1882,5 +1882,5 @@ IL_0035:  conv.i4           // Convert to int32, pushing int32 on stack
 IL_0036:  blt.s IL_0004     // Branch to target (IL_004) if less than, short form
 
 IL_0038:  ret 
-  } // end of method Selsort::SelectionSort
+} // end of method Selsort::SelectionSort
 ```
