@@ -1815,33 +1815,34 @@ let keyword s =
 ```il
 // method line 2
 .method public static hidebysig 
-      default void SelectionSort (int32[] arr)  cil managed 
-  {
-      // Method begins at RVA 0x20b8
+		default void SelectionSort (int32[] arr)  cil managed 
+{
+	// Method begins at RVA 0x20b8
 // Code size 57 (0x39)
 .maxstack 4
 .locals init (
-  int32 V_0,
-  int32 V_1,
-  int32 V_2,
-  int32 V_3)
+	int32	V_0,			// initialize i 	
+	int32	V_1,			// initialize least 	
+	int32	V_2,			// initialize tmp
+	int32	V_3)			// initialize j 
+
 IL_0000:  ldc.i4.0          // Push 0 onto the stack as int32
-IL_0001:  stloc.0           // Pop a value from stack into local variable 0
-IL_0002:  br.s IL_0032      // Branch to target (IL_0032), short form
+IL_0001:  stloc.0           // Pop a value from stack into local variable 0	( i = 0 )
+IL_0002:  br.s IL_0032      // Branch to target (IL_0032), short form ( i < arr.length )
 
-IL_0004:  ldloc.0           // Load local variable 0 onto stack
-IL_0005:  stloc.1           // Pop a value from stack into local variable 1
-IL_0006:  ldloc.0           // Load local variable 0 onto stack
-IL_0007:  ldc.i4.1          // Push 1 onto the stack as int32
-IL_0008:  add               // Add two values, returning a new value
-IL_0009:  stloc.3           // Pop a value from stack into local variable 3
-IL_000a:  br.s IL_001a      // Branch to target (IL_001a), short form
-
-IL_000c:  ldarg.0           // Load argument 0 onto the stack
+IL_0004:  ldloc.0           // Load local variable 0 onto stack ( load i onto stack )
+IL_0005:  stloc.1           // Pop a value from stack into local variable 1 ( pop i onto least )
+IL_0006:  ldloc.0           // Load local variable 0 onto stack ( load i onto stack )
+IL_0007:  ldc.i4.1          // Push 1 onto the stack as int32 ( push 1 to stack )
+IL_0008:  add               // Add two values, returning a new value ( i + 1 )
+IL_0009:  stloc.3           // Pop a value from stack into local variable 3 ( j = IL_0008 )
+IL_000a:  br.s IL_001a      // Branch to target (IL_001a), short form ( j < arr.length )
+// and so on
+IL_000c:  ldarg.0           // Load argument 0 onto the stack 
 IL_000d:  ldloc.3           // Load local variable 3 onto stack
 IL_000e:  ldelem.i4         // Load the element with type int32 at index onto the top of the stack as an int32
-IL_000f:  ldarg.0           // Load argument 0 onto the stack
-IL_0010:  ldloc.1           // Load local variable 1 onto stack
+IL_000f:  ldarg.0           // Load argument 0 onto the stack 
+IL_0010:  ldloc.1           // Load local variable 1 onto stack 
 IL_0011:  ldelem.i4         // Load the element with type int32 at index onto the top of the stack as an int32
 IL_0012:  bge.s IL_0016     // Branch to target (IL_0016) if greater than or equal to, short form
 
